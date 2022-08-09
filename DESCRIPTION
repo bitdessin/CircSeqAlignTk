@@ -1,0 +1,51 @@
+Package: CircSeqAlignTk
+Type: Package
+Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
+Version: 0.99.0
+Authors@R: 
+    c(person("Jianqiang", "Sun", , "sun@biunit.dev", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-3438-3199")),
+      person("Xi", "Fu", , role = c("aut")),
+      person("Wei", "Cao", role = c("aut")))
+Description: 
+    CircSeqAlignTk is an R package for end-to-end analysis,
+    from alignment to visualization,
+    of RNA-seq data obtained from organelles or organisms
+    with circular genome sequences,
+    such as bacteria, viruses, and viroids.
+    In addition, CircSeqAlignTk implements a tidy interface
+    to generate synthetic sequencing data that mimic real RNA-seq data,
+    allowing developers to evaluate the performance of alignment tools,
+    new alignment algorithms, and new workflows.
+Depends: R (>= 4.2)
+Imports:
+    stats,
+    tools,
+    utils,
+    methods,
+    S4Vectors,
+    rlang,
+    magrittr,
+    dplyr,
+    tidyr,
+    ggplot2,
+    BiocGenerics,
+    Biostrings,
+    IRanges,
+    ShortRead,
+    Rsamtools,
+    Rbowtie2,
+    Rhisat2
+Suggests:
+    knitr,
+    rmarkdown,
+    R.utils,
+    BiocStyle
+VignetteBuilder: knitr
+biocViews: Sequencing, SmallRNA, Alignment, Software
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+URL: https://github.com/jsun/vsrnaseqtk
+BugReports: https://github.com/jsun/vsrnaseqtk/issues
