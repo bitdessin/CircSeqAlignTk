@@ -19,8 +19,8 @@ vignette("CircSeqAlignTk", package = "CircSeqAlignTk")
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/jsun/vsrnaseqtk}
-  \item Report bugs at \url{https://github.com/jsun/vsrnaseqtk/issues}
+  \item \url{https://github.com/jsun/CircSeqAlignTk}
+  \item Report bugs at \url{https://github.com/jsun/CircSeqAlignTk/issues}
 }
 
 }

@@ -77,7 +77,6 @@ generate_reads <- function(n = 1e4, seq = NULL, output = NULL, adapter = NULL,
                            mismatch_prob = 0,
                            peaks = NULL, read_name_prefix = NULL) {
     if (is.null(output)) stop('Specify a file path to save FASTQ.')
-    output <- abspath(output)
 
     message('Initialize parameters for generating synthetic reads')
     seq <- .syn_set_seq(seq)

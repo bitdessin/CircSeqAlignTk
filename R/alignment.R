@@ -51,7 +51,6 @@ build_index <- function(input, output = NULL, n_threads = 1, overwrite = TRUE,
                               'to save index files.')
 
     dir.create(output, showWarnings = FALSE, recursive = TRUE)
-    index_path <- abspath(output)
 
     # generate metadata object to store sequence and index path
     ref_fasta <- read_single_fasta(input)
@@ -237,7 +236,6 @@ align_reads <- function(input, index, output,
 
     # preparation (create output directory for storing alignment results)
     dir.create(output, showWarnings = FALSE, recursive = TRUE)
-    output <- abspath(output)
     output_prefix <- file.path(output, filename(input))
 
     # craete a object to store the file path
