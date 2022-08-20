@@ -37,7 +37,9 @@ during the quality control process,
 there is no need to use this function.
 }
 \examples{
+output_dpath <- tempdir()
+
 fq <- system.file(package="CircSeqAlignTk", "extdata", "srna.fq.gz")
-output_fq <- "sran.filtered.fq.gz"
+output_fq <- file.path(output_dpath, "sran.filtered.fq.gz")
 filter_reads(fq, output_fq, seq(21, 24))
 }

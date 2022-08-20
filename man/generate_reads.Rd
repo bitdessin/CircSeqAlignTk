@@ -72,7 +72,7 @@ a data frame is randomly generated before sampling the reads.}
 If \code{NULL}, generate the prefix randomly.}
 }
 \value{
-A \code{\link{fCircSeqAlignTkSim-class}} object containing parameters
+A \code{\link{CircSeqAlignTkSim-class}} object containing parameters
 for read generation.
 }
 \description{
@@ -81,22 +81,26 @@ sequenced from organelles or organisms with circular genome sequences
 in FASTQ format file.
 }
 \examples{
-sim <- generate_reads(output = 'sample1.fq.gz')
+output_dpath <- tempdir()
 
+sim <- generate_reads(output = file.path(output_dpath, 'sample1.fq.gz'))
 
 srna_length <- data.frame(length = c(21, 22, 23, 24),
                           prob = c(0.5, 0.3, 0.1, 0.1))
-sim <- generate_reads(output = 'sample2.fq.gz', srna_length = srna_length)
+sim <- generate_reads(output = file.path(output_dpath, 'sample2.fq.gz'),
+                      srna_length = srna_length)
 
 
-sim <- generate_reads(output = 'sample3.fq.gz', mismatch_prob = c(0.1, 0.1))
+sim <- generate_reads(output = file.path(output_dpath, 'sample3.fq.gz'),
+                      mismatch_prob = c(0.1, 0.1))
 
 
 peaks <- data.frame(mean =   c( 50, 100, 150),
                     std =    c(  3,   5,   5),
                     strand = c('+', '-', '+'),
                     prob =   c(0.4, 0.4, 0.2))
-sim <- generate_reads(output = 'sample4.fq.gz', peaks = peaks)
+sim <- generate_reads(output = file.path(output_dpath, 'sample4.fq.gz'),
+                      peaks = peaks)
 }
 \seealso{
 \code{\link{CircSeqAlignTkSim-class}}

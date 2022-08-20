@@ -23,6 +23,8 @@ according to the read length.}
 
 \item{scale_fun}{Set \code{log10} or \code{log} to plot the alignment coverage
 in logarithmic scale.}
+
+\item{...}{Other graphical parameters.}
 }
 \value{
 An object of ggplot2.
@@ -35,11 +37,13 @@ aligned in the forward and reversed strands, respectively.
 }
 \examples{
 \dontshow{
+output_dpath <- tempdir()
 genome_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
 fq <- system.file(package="CircSeqAlignTk", "extdata", "srna.fq.gz")
-ref_index <- build_index(input = genome_seq, output = 'index')
-aln <- align_reads(input = fq, index = ref_index, output = 'align_results',
-                   read_lengths = seq(21, 24))
+ref_index <- build_index(input = genome_seq,
+                         output = file.path(output_dpath, 'index'))
+aln <- align_reads(input = fq, index = ref_index,
+                   output = file.path(output_dpath, 'align_results'))
 }
 alncov <- calc_coverage(aln)
 plot(alncov)

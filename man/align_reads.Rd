@@ -10,7 +10,6 @@ align_reads(
   output,
   n_threads = 1,
   n_mismatch = 1,
-  read_lengths = NULL,
   overwrite = TRUE,
   aligner = c("bowtie2", "hisat2"),
   add_args = NULL
@@ -63,15 +62,19 @@ This function first attempts to call the specified alignment tool
 installed on the operation system directly;
 however, if the tool is not installed,
 then the function attempts to call
-\code{\link[RBowtie2]{bowtie2_build}} or \code{\link[Rhisat2]{hisat2_build}}
-functions implemented in the RBowtie2 or Rhisat2 packages for alignment.
+\code{\link[Rbowtie2]{bowtie2_build}} or \code{\link[Rhisat2]{hisat2_build}}
+functions implemented in the Rbowtie2 or Rhisat2 packages for alignment.
 }
 \examples{
+output_dpath <- tempdir()
+
 genome_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
 fq <- system.file(package="CircSeqAlignTk", "extdata", "srna.fq.gz")
 
-ref_index <- build_index(input = genome_seq, output = 'index')
-aln <- align_reads(input = fq, index = ref_index, output = 'align_results')
+ref_index <- build_index(input = genome_seq,
+                         output = file.path(output_dpath, 'index'))
+aln <- align_reads(input = fq, index = ref_index,
+                   output = file.path(output_dpath, 'align_results'))
 
 slot(aln, 'stats')
 }

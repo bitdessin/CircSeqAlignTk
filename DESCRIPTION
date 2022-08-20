@@ -39,6 +39,7 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
+    testthat,
     R.utils,
     BiocStyle
 VignetteBuilder: knitr

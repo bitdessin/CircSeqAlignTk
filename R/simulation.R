@@ -49,26 +49,30 @@
 #'     a data frame is randomly generated before sampling the reads.
 #' @param read_name_prefix The prefix of read name in FASTQ format file.
 #'     If `NULL`, generate the prefix randomly.
-#' @return A \code{\link{fCircSeqAlignTkSim-class}} object containing parameters
+#' @return A \code{\link{CircSeqAlignTkSim-class}} object containing parameters
 #'     for read generation.
 #' @seealso \code{\link{CircSeqAlignTkSim-class}}
 #' @examples
-#' sim <- generate_reads(output = 'sample1.fq.gz')
+#' output_dpath <- tempdir()
 #'
+#' sim <- generate_reads(output = file.path(output_dpath, 'sample1.fq.gz'))
 #'
 #' srna_length <- data.frame(length = c(21, 22, 23, 24),
 #'                           prob = c(0.5, 0.3, 0.1, 0.1))
-#' sim <- generate_reads(output = 'sample2.fq.gz', srna_length = srna_length)
+#' sim <- generate_reads(output = file.path(output_dpath, 'sample2.fq.gz'),
+#'                       srna_length = srna_length)
 #'
 #'
-#' sim <- generate_reads(output = 'sample3.fq.gz', mismatch_prob = c(0.1, 0.1))
+#' sim <- generate_reads(output = file.path(output_dpath, 'sample3.fq.gz'),
+#'                       mismatch_prob = c(0.1, 0.1))
 #'
 #'
 #' peaks <- data.frame(mean =   c( 50, 100, 150),
 #'                     std =    c(  3,   5,   5),
 #'                     strand = c('+', '-', '+'),
 #'                     prob =   c(0.4, 0.4, 0.2))
-#' sim <- generate_reads(output = 'sample4.fq.gz', peaks = peaks)
+#' sim <- generate_reads(output = file.path(output_dpath, 'sample4.fq.gz'),
+#'                       peaks = peaks)
 #' @importFrom stats rbinom runif
 #' @importFrom Biostrings readDNAStringSet reverseComplement DNAStringSet
 #' @export
@@ -374,17 +378,19 @@ generate_reads <- function(n = 1e4, seq = NULL, output = NULL, adapter = NULL,
 #' @return A \code{\link{CircSeqAlignTkSim-class}} object.
 #' @seealso \code{\link{CircSeqAlignTkSim-class}}, \code{\link{generate_reads}}
 #' @examples
+#' output_dpath <- tempdir()
+#'
 #' sim_params_1 <- data.frame(length = c(21, 22), prob = c(0.5, 0.4))
-#' sim_1 <- generate_reads(n = 1e5,
-#'                         output = 'sample1.fq.gz',
+#' sim_1 <- generate_reads(n = 5e2,
+#'                         output = file.path(output_dpath, 'sample1.fq.gz'),
 #'                         srna_length = sim_params_1)
 #'
 #' sim_params_2 <- data.frame(length = c(19, 20, 23), prob = c(0.2, 0.7, 0.1))
-#' sim_2 <- generate_reads(n = 1e4,
-#'                         output = 'sample2.fq.gz',
+#' sim_2 <- generate_reads(n = 5e2,
+#'                         output = file.path(output_dpath, 'sample2.fq.gz'),
 #'                         srna_length = sim_params_2)
 #'
-#' sim <- merge(sim_1, sim_2, output = 'sample.fq.gz')
+#' sim <- merge(sim_1, sim_2, output = file.path(output_dpath, 'sample.fq.gz'))
 #' @importFrom Biostrings readDNAStringSet reverseComplement DNAStringSet
 #' @export
 merge.CircSeqAlignTkSim <- function(..., output = NULL, overwrite = TRUE) {

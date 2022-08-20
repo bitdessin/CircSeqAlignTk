@@ -56,13 +56,16 @@ to call the specified alignment tool
 installed on the operation system directly;
 however, if the tool is not installed,
 then the function attempts to call
-\code{\link[RBowtie2]{bowtie2_build}} or
+\code{\link[Rbowtie2]{bowtie2_build}} or
 \code{\link[Rhisat2]{hisat2_build}} functions
-implemented in the RBowtie2 or Rhisat2 packages for indexing.
+implemented in the Rbowtie2 or Rhisat2 packages for indexing.
 }
 \examples{
+output_dpath <- tempdir()
+
 genome_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
-ref_index <- build_index(input = genome_seq, output = "index")
+ref_index <- build_index(input = genome_seq,
+                         output = file.path(output_dpath, "index"))
 }
 \seealso{
 \code{\link{CircSeqAlignTkRefIndex-class}}
