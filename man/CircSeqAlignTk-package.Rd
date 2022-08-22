@@ -13,7 +13,7 @@ Refer to the vignette for an overview of the package,
 quick start, and detailed usages.
 }
 \examples{
-vignette("CircSeqAlignTk", package = "CircSeqAlignTk")
+browseVignettes("CircSeqAlignTk")
 
 }
 \seealso{

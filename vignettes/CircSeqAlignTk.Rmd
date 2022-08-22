@@ -19,14 +19,15 @@ output:
         highlight: pygments
         toc: true
         toc_depth: 2
+editor_options:
+    chunk_output_type: console
 bibliography: references.bib
 package: CircSeqAlignTk
 fontsize: 14pt
 vignette: |
-    %\VignetteIndexEntry{CircSeqAlignTk: circular sequences aligning toolkit}
-    %\VignetteEngine{knitr::knitr}
+    %\VignetteIndexEntry{CircSeqAlignTk}
+    %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
-    %\usepackage[utf8]{inputenc}
     %\VignettePackage{CircSeqAlignTk}
 abstract: |
     CircSeqAlignTk is an R package for end-to-end analysis,
@@ -44,8 +45,6 @@ abstract: |
 ---
 
 ```{r style, echo=FALSE, results='hide', message=FALSE}
-library(BiocStyle)
-BiocStyle::markdown()
 knitr::opts_chunk$set(tidy = FALSE,
                       cache = FALSE,
                       error = TRUE,
@@ -82,7 +81,7 @@ package, the latest version of R is required.
 
 
 Viroids are composed of 246–401 nt, single-stranded circular non-coding RNAs
-(@Hull_2014; @Flores_2015; @Gago_2016).
+[@Hull_2014; @Flores_2015; @Gago_2016].
 Sequencing small RNAs from viroid-infected plants
 could offer insights regarding the mechanisms of infection
 and eventually help prevent these infections in plants.
@@ -130,7 +129,7 @@ trimming adapter sequences from the sequence reads is required,
 because most sequence reads in this FASTQ format file contain adapters
 with sequence "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".
 Here, we use [AdapterRemoval](https://adapterremoval.readthedocs.io/en/stable/)
-(@adapterremoval) implemented in the `r Biocpkg('Rbowtie2')` (@rbowtie2) package
+(@adapterremoval) implemented in the `r Biocpkg('Rbowtie2')` [@rbowtie2] package
 to trim the adapters before aligning the sequence reads.
 Note that the length of small RNAs derived from viroids
 is known to be in the range of 21–24 nt.
@@ -255,8 +254,8 @@ Consequently, sequence reads obtained from organelles or organisms
 with circular genome sequences can be aligned anywhere,
 including at both ends of the sequence represented in the FASTA format.
 Using existing alignment tools such as
-[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) (@bowtie2) and
-[HISAT2](https://daehwankimlab.github.io/hisat2/) (@hisat2) to align such
+[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) [@bowtie2] and
+[HISAT2](https://daehwankimlab.github.io/hisat2/) [@hisat2] to align such
 sequence reads onto circular sequences may fail, because these tools are
 designed to align sequence reads to linear genome sequences and their
 implementation does not assume that a single read can be aligned to both ends
@@ -607,7 +606,7 @@ plot(alncov, read_lengths = c(21, 22))
 
 As the `plot` function returns a ggplot2 class object,
 we can use additional functions
-implemented in the `r CRANpkg('ggplot2')` package (@ggplot2)
+implemented in the `r CRANpkg('ggplot2')` package [@ggplot2]
 to decorate the chart, for example:
 
 ```{r implementationVisualizationOption1, fig.cap='Alignment coverage arranged with ggplot2.'}
@@ -1258,14 +1257,14 @@ the probabilities of mismatches to estimate how the performance changes.
 Viroids are the smallest infectious pathogens. Most variants of viroids
 infect plants without being toxic, while some variants occasionally
 result in extensive damage such as stunting, leaf deformation,
-leaf necrosis, fruit distortion, and even plant death (@Flores_2005).
+leaf necrosis, fruit distortion, and even plant death [@Flores_2005].
 A single outbreak of toxic viroid infection can cause tremendous economic
-and agricultural damage (@Soliman_2012; @Sastry_2013).
+and agricultural damage [@Soliman_2012; @Sastry_2013].
 
 The damage caused by viroids to plants is thought to occur
 during the replication process of the viroid that infects the plants. 
 Viroids are composed of 246–401 nt single-stranded circular non-coding RNAs
-(@Hull_2014; @Flores_2015; @Gago_2016).
+[@Hull_2014; @Flores_2015; @Gago_2016].
 Replication of viroids depends on their host plants through an RNA-based
 rolling circle process.
 This process generates double-stranded RNAs (dsRNAs) as intermediate products.
@@ -1292,7 +1291,7 @@ to identify the pathogenic region in the viroid.
 
 Adkar-Purushothama et al. reported viroid-host interactions
 by infecting potato spindle tuber viroid (PSTVd) RG1 variant in tomato plants
-(@Adkar_2017).
+[@Adkar_2017].
 In their study, small RNAs were sequenced from viroid-infected tomato plants
 to investigate the expression profiles (i.e., alignment coverage) of vd-sRNAs.
 In this case study, we demonstrate the manner in which such expression
@@ -1424,7 +1423,7 @@ plot(alncov)
 We can confirm that the results with the `r Biocpkg('CircSeqAlignTk')` package
 are the same as the results shown in
 [Figure 1B](https://www.nature.com/articles/s41598-017-08823-z/figures/1)
-of the original paper (@Adkar_2017) based on
+of the original paper [@Adkar_2017] based on
 the above figure \@ref(fig:tutorialViroidCoverage).
 
 
