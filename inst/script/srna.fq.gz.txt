@@ -1,0 +1,6 @@
+'inst/extdata/srna.fq.gz' is a FASTQ format file containing small RNA-Seq reads
+from tomato plants infected with the Potato spindle tuber viroid (PSTVd) isolate Cen-1.
+The file contains 29,178 small RNA-Seq reads. The first 27,678 reads are raw sequence
+reads containing the adapter sequence AGATCGGAAGAGCACGTCTGAACTCCAGTCAC.
+The remaining reads are reads that have been preprocessed by AdapterRemoval
+to remove adapter sequences.

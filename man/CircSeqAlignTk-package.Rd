@@ -6,7 +6,7 @@
 \alias{CircSeqAlignTk-package}
 \title{CircSeqAlignTk: A toolkit for end-to-end analysis of RNA-seq data for circular genomes}
 \description{
-CircSeqAlignTk is an R package for end-to-end analysis, from alignment to visualization, of RNA-seq data obtained from organelles or organisms with circular genome sequences, such as bacteria, viruses, and viroids. In addition, CircSeqAlignTk implements a tidy interface to generate synthetic sequencing data that mimic real RNA-seq data, allowing developers to evaluate the performance of alignment tools, new alignment algorithms, and new workflows.
+CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis of circular genome sequences, from alignment to visualization. It mainly targets viroids which are composed of 246-401 nt circular RNAs. In addition, CircSeqAlignTk implements a tidy interface to generate synthetic sequencing data that mimic real RNA-Seq data, allowing developers to evaluate the performance of alignment tools, new alignment algorithms, and new workflows.
 }
 \details{
 Refer to the vignette for an overview of the package,

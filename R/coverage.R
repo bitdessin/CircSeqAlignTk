@@ -13,7 +13,6 @@
 #'     the \code{\link{align_reads}} function.
 #' @return A \code{\link{CircSeqAlignTkCoverage-class}} object.
 #' @examples
-#' \dontshow{
 #' output_dpath <- tempdir()
 #' genome_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
 #' fq <- system.file(package="CircSeqAlignTk", "extdata", "srna.fq.gz")
@@ -21,7 +20,7 @@
 #'                          output = file.path(output_dpath, 'index'))
 #' aln <- align_reads(input = fq, index = ref_index,
 #'                    output = file.path(output_dpath, 'align_results'))
-#' }
+#' 
 #' alncov <- calc_coverage(aln)
 #' @seealso \code{\link{CircSeqAlignTkAlign-class}},
 #'     \code{\link{CircSeqAlignTkCoverage-class}}, \code{\link{align_reads}}
@@ -143,7 +142,6 @@ calc_coverage <- function(x) {
 #' @param ... Other graphical parameters.
 #' @return An object of ggplot2.
 #' @examples
-#' \dontshow{
 #' output_dpath <- tempdir()
 #' genome_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
 #' fq <- system.file(package="CircSeqAlignTk", "extdata", "srna.fq.gz")
@@ -151,7 +149,7 @@ calc_coverage <- function(x) {
 #'                          output = file.path(output_dpath, 'index'))
 #' aln <- align_reads(input = fq, index = ref_index,
 #'                    output = file.path(output_dpath, 'align_results'))
-#' }
+#' 
 #' alncov <- calc_coverage(aln)
 #' plot(alncov)
 #' @seealso \code{\link{CircSeqAlignTkCoverage-class}}, \code{\link{calc_coverage}}

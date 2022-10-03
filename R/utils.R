@@ -3,6 +3,29 @@ abspath <- function(fpath) {
 }
 
 
+#' Get the slot contents from a formal class
+#' 
+#' This function returns the slot contents from a formal class.
+#' It is convenient to use `@` when accessing the contents of a slot,
+#' however, using `@` will generate warnings
+#' during the unit tests under software development.
+#' This function was created to avoid that warning.
+#' Users do not have to use this function.
+#' 
+#' @param object An object from a formally defined class.
+#' @param name The name of the slot.
+#' @return The contents of the specified slot from the given object.
+#' @examples
+#' output_dpath <- tempdir()
+#' sim <- generate_reads(output = file.path(output_dpath, 'sample1.fq.gz'))
+#' head(get_slot_contents(sim, 'peak'))
+#' @importFrom methods slot
+#' @export
+get_slot_contents <- function(object, name) {
+    slot(object, name)
+}
+
+
 #' @importFrom tools file_path_sans_ext file_ext
 filename <- function(fpath) {
     fnames <- NULL

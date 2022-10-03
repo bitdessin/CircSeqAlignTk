@@ -1,0 +1,4 @@
+'inst/extdata/FR851463.fa' is a FASTA format file containing the genome
+sequence of the Potato spindle tuber viroid (PSTVd) isolate Cen-1.
+The sequence is registered in GenBank under accession number FR851463
+and can be downloaded from https://www.ncbi.nlm.nih.gov/nuccore/FR851463.
