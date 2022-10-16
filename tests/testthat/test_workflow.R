@@ -1,5 +1,3 @@
-context('workflow')
-
 test_that('workflow with Bowtie2', {
     setwd(tempdir())
 
