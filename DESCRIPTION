@@ -1,7 +1,7 @@
 Package: CircSeqAlignTk
 Type: Package
 Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
-Version: 1.3.0
+Version: 1.4.0
 Authors@R: 
     c(person("Jianqiang", "Sun", , "sun@biunit.dev", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3438-3199")),
