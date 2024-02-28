@@ -1,6 +1,6 @@
 ---
 title: "CircSeqAlignTk: An R package for end-to-end analysis of RNA-seq data for circular genomes"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "Modified: 16, October, 2022. Compiled: `r format(Sys.time(), '%d %B, %Y')`"
 author:
     - name: Jianqiang Sun
       affiliation: |
@@ -102,7 +102,7 @@ ws <- '~/desktop/viroid_project'
 # Quick start
 
 
-Viroids are composed of 246–401 nt, single-stranded circular non-coding RNAs
+Viroids are composed of 246-401 nt, single-stranded circular non-coding RNAs
 [@Hull_2014; @Flores_2015; @Gago_2016].
 Sequencing small RNAs from viroid-infected plants
 could offer insights regarding the mechanisms of infection
@@ -166,7 +166,7 @@ library(Rbowtie2)
 adapter <- 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
 
 # decompressed the gzip file for trimming to avoid errors from `remove_adapters`
-gunzip(fq, destname=file.path(ws, 'srna.fq'), overwrite = TRUE, remove = FALSE)
+gunzip(fq, destname = file.path(ws, 'srna.fq'), overwrite = TRUE, remove = FALSE)
 
 trimmed_fq <- file.path(ws, 'srna_trimmed.fq')
 params <- '--maxns 1 --trimqualities --minquality 30 --minlength 21 --maxlength 24'
@@ -333,7 +333,7 @@ specified by the argument `output`.
 
 
 ```{r implementation__build_index}
-genome_seq <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
+genome_seq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'FR851463.fa')
 ref_index <- build_index(input = genome_seq, output = file.path(ws, 'index'))
 ```
 
@@ -449,7 +449,7 @@ The alignment results will be stored into the folder specified
 by the argument `output`.
 
 ```{r implementation__align_read}
-fq <- system.file(package='CircSeqAlignTk', 'extdata', 'srna.fq.gz')
+fq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'srna.fq.gz')
 # trimming the adapter sequences if needed before alignment, omitted here.
 
 aln <- align_reads(input = fq,
@@ -901,7 +901,7 @@ sim <- generate_reads(adapter = NA,
                       mismatch_prob = 0,
                       output = file.path(ws, 'synthetic_reads.fq.gz'))
 
-genome_seq <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
+genome_seq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'FR851463.fa')
 ref_index <- build_index(input = genome_seq, 
                          output = file.path(ws, 'index'))
 aln <- align_reads(input = file.path(ws, 'synthetic_reads.fq.gz'),
@@ -974,7 +974,7 @@ remove_adapters(file1 = file.path(ws, 'synthetic_reads.fq'),
                 overwrite = TRUE)
 
 # alignment
-genome_seq <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
+genome_seq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'FR851463.fa')
 ref_index <- build_index(input = genome_seq, 
                          output = file.path(ws, 'index'))
 aln <- align_reads(input = file.path(ws, 'srna_trimmed.fq'),
@@ -1033,7 +1033,7 @@ library(R.utils)
 library(Rbowtie2)
 
 params <- '--maxns 1 --trimqualities --minquality 30 --minlength 21 --maxlength 24'
-genome_seq <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
+genome_seq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'FR851463.fa')
 ref_index <- build_index(input = genome_seq, 
                          output = file.path(ws, 'index'))
 
@@ -1244,6 +1244,32 @@ are the same as the results shown in
 [Figure 1B](https://www.nature.com/articles/s41598-017-08823-z/figures/1)
 of the original paper [@Adkar_2017] based on
 the above figure \@ref(fig:tutorialViroidCoverage).
+
+
+
+# GUI mode of CircSeqAlignTk
+
+The `r Biocpkg('CircSeqAlignTk')` package also provides
+a graphical user interface (GUI) mode.
+To use the GUI mode, we can run the following script:
+
+```{r tutorial_gui, eval=FALSE}
+library(shiny)
+library(CircSeqAlignTk)
+app <- build_app()
+shiny::runApp(app)
+```
+
+In the GUI mode, users are required to
+set a working directory (default is the current directory),
+a FASTQ file for small RNA-Seq data,
+and a FASTA file of the viroid genome sequence.
+After setting up the working directory and files,
+users can click the "Run" buttons
+to start the FASTQ quality control and alignment process.
+If required, the parameters of quality control and alignment can be adjusted.
+The results will be displayed in the application
+and saved in the working directory.
 
 
 # Session Information

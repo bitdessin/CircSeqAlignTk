@@ -27,10 +27,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Jianqiang Sun \email{sun@biunit.dev} (\href{https://orcid.org/0000-0002-3438-3199}{ORCID})
 
-Authors:
+Other contributors:
 \itemize{
-  \item Xi Fu
-  \item Wei Cao
+  \item Xi Fu [contributor]
+  \item Wei Cao [contributor]
 }
 
 }

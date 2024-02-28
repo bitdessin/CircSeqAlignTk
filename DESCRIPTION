@@ -1,12 +1,14 @@
 Package: CircSeqAlignTk
 Type: Package
 Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: 
-    c(person("Jianqiang", "Sun", , "sun@biunit.dev", role = c("aut", "cre"),
+    c(person("Jianqiang", "Sun",
+                email = "sun@biunit.dev",
+                role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-3438-3199")),
-      person("Xi", "Fu", , role = c("aut")),
-      person("Wei", "Cao", role = c("aut")))
+      person("Xi", "Fu", role = c("ctb")),
+      person("Wei", "Cao", role = c("ctb")))
 Description: 
     CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis
     of circular genome sequences, from alignment to visualization.
@@ -20,6 +22,7 @@ Imports:
     stats,
     tools,
     utils,
+    R.utils,
     methods,
     S4Vectors,
     rlang,
@@ -33,18 +36,23 @@ Imports:
     ShortRead,
     Rsamtools,
     Rbowtie2,
-    Rhisat2
+    Rhisat2,
+    shiny,
+    shinyFiles,
+    shinyjs,
+    plotly,
+    parallel,
+    htmltools
 Suggests:
     knitr,
     rmarkdown,
     testthat,
-    R.utils,
     BiocStyle
 VignetteBuilder: knitr
 biocViews: Sequencing, SmallRNA, Alignment, Software
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.1
 URL: https://github.com/jsun/CircSeqAlignTk
 BugReports: https://github.com/jsun/CircSeqAlignTk/issues
