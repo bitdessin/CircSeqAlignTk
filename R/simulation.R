@@ -323,7 +323,7 @@ generate_reads <- function(n = 1e4, seq = NULL, output = NULL, adapter = NULL,
         mat_fwd[, i] <- as.integer(
             coverage(IRanges(srna_pos$start[k], width = srna_pos$length[k]),
                      width = max_pos))
-        # reversed strand
+        # reverse strand
         k <- ((srna_pos$length == read_length[i]) &
                   (srna_pos$strand == '-'))
         mat_rev[, i] <- as.integer(
@@ -345,7 +345,7 @@ generate_reads <- function(n = 1e4, seq = NULL, output = NULL, adapter = NULL,
 
     new('CircSeqAlignTkCoverage',
         forward = mat_fwd,
-        reversed = mat_rev,
+        reverse = mat_rev,
         .figdata = rbind(reshape_coverage_df(mat_fwd, '+'),
                          reshape_coverage_df(mat_rev, '-')))
 }
@@ -429,11 +429,11 @@ merge.CircSeqAlignTkSim <- function(..., output = NULL, overwrite = TRUE) {
     }
 
     mat_fwd <- .merge_coverage_matrix(x@forward, y@forward)
-    mat_rev <- .merge_coverage_matrix(x@reversed, y@reversed)
+    mat_rev <- .merge_coverage_matrix(x@reverse, y@reverse)
 
     new('CircSeqAlignTkCoverage',
         forward = mat_fwd,
-        reversed = mat_rev,
+        reverse = mat_rev,
         .figdata = rbind(reshape_coverage_df(mat_fwd, '+'),
                          reshape_coverage_df(mat_rev, '-')))
 }

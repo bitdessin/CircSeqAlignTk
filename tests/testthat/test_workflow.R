@@ -103,8 +103,8 @@ test_that('workflow - reads without adapter and mismatches correctly aligned', {
         fwd_pred <- slot(alncov, 'forward')
         fwd_true <- slot(slot(sim, 'coverage'), 'forward')
         fwd_rmse[i] <- sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
-        rev_pred <- slot(alncov, 'reversed')
-        rev_true <- slot(slot(sim, 'coverage'), 'reversed')
+        rev_pred <- slot(alncov, 'reverse')
+        rev_true <- slot(slot(sim, 'coverage'), 'reverse')
         rev_rmse[i] <- sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
     }
 

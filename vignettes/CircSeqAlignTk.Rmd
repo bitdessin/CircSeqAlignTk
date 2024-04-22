@@ -219,14 +219,14 @@ and combines them into two data frames according to the aligned strands.
 ```{r quick_start__summary}
 alncov <- calc_coverage(aln)
 head(get_slot_contents(alncov, 'forward'))  # alignment coverage in forward strand 
-head(get_slot_contents(alncov, 'reversed')) # alignment coverage in reversed strand 
+head(get_slot_contents(alncov, 'reverse')) # alignment coverage in reverse strand 
 ```
 
 
 The alignment coverage can be then visualized using the `plot` function
 (Figure \@ref(fig:quickStartVisualization)).
 The scale of the upper and lower directions indicate alignment coverage of
-the forward and reversed strands, respectively.
+the forward and reverse strands, respectively.
 
 
 ```{r quickStartVisualization, fig.cap='Alignment coverage. The alignment coverage of the case study.'}
@@ -574,20 +574,20 @@ alncov <- calc_coverage(aln)
 
 
 This function returns a `CircSeqAlignTkCoverage` class object.
-Alignment coverage of the reads aligned in the forward and reversed strands
-are stored in the `@forward` and `@reversed` slots, respectively,
+Alignment coverage of the reads aligned in the forward and reverse strands
+are stored in the `@forward` and `@reverse` slots, respectively,
 as a data frame.
 
 
 ```{r implementation__summary_fwd}
 head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reversed'))
+head(get_slot_contents(alncov, 'reverse'))
 ```
 
 
 Coverage can be visualized with an area chart  using the `plot` function.
 In the chart, the upper and lower directions of the y-axis
-represent the alignment coverage of reads with forward and reversed strands,
+represent the alignment coverage of reads with forward and reverse strands,
 respectively.
 
 
@@ -680,7 +680,7 @@ This can be visualized using the `plot` function.
 ```{r simDefaultParamsCoverageFig, fig.cap='Alignment coverage of the synthetic data.'}
 alncov <- get_slot_contents(sim, 'coverage')
 head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reversed'))
+head(get_slot_contents(alncov, 'reverse'))
 plot(alncov)
 ```
 
@@ -922,9 +922,9 @@ between the true and predicted values for validation.
 fwd_pred <- get_slot_contents(alncov, 'forward')
 fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
 sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
-# coverage of reads in reversed strand
-rev_pred <- get_slot_contents(alncov, 'reversed')
-rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reversed')
+# coverage of reads in reverse strand
+rev_pred <- get_slot_contents(alncov, 'reverse')
+rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
 sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 ```
 
@@ -995,9 +995,9 @@ alignment coverage.
 fwd_pred <- get_slot_contents(alncov, 'forward')
 fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
 sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
-# coverage of reads in reversed strand
-rev_pred <- get_slot_contents(alncov, 'reversed')
-rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reversed')
+# coverage of reads in reverse strand
+rev_pred <- get_slot_contents(alncov, 'reverse')
+rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
 sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 ```
 
@@ -1075,25 +1075,25 @@ for (i in seq(fwd_rmse)) {
     fwd_pred <- get_slot_contents(alncov, 'forward')
     fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
     fwd_rmse[i] <- sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
-    rev_pred <- get_slot_contents(alncov, 'reversed')
-    rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reversed')
+    rev_pred <- get_slot_contents(alncov, 'reverse')
+    rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
     rev_rmse[i] <- sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 }
 ```
 
 
 ```{r simeval__sim2_rmse}
-rmse <- data.frame(forward = fwd_rmse, reversed = rev_rmse)
+rmse <- data.frame(forward = fwd_rmse, reverse = rev_rmse)
 rmse
 ```
 
 The RMSE between the true (i.e., simulation condition) and predicted coverage
-for the sequence reads in forward strand and reversed strand are
+for the sequence reads in forward strand and reverse strand are
 `r sprintf('%.2f', mean(rmse$forward))` ±
 `r sprintf('%.2f', sd(rmse$forward))`
 and
-`r sprintf('%.2f', mean(rmse$reversed))` ±
-`r sprintf('%.2f', sd(rmse$reversed))`,
+`r sprintf('%.2f', mean(rmse$reverse))` ±
+`r sprintf('%.2f', sd(rmse$reverse))`,
 respectively.
 The result indicates that performance of this workflow
 is worse when the sequence reads
@@ -1216,7 +1216,7 @@ we can see that the numbers of
 `r format(round(x[3,3]), big.mark = ',', scientific = FALSE)` + 
 `r format(round(x[4,3]), big.mark = ',', scientific = FALSE)` = 
 `r format(round(x[3,3]+x[4,3]), big.mark = ',', scientific = FALSE)`
-reads in forward and reversed strands
+reads in forward and reverse strands
 that were successfully aligned to the viroid genome sequences, respectively.
 
 
@@ -1234,7 +1234,7 @@ alncov <- calc_coverage(aln)
 
 ```{r tutorialViroidCoverage, fig.cap='Alignment coverage of small RNA-Seq data obtained from the viroid-infected tomato plants.'}
 head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reversed'))
+head(get_slot_contents(alncov, 'reverse'))
 plot(alncov)
 ```
 

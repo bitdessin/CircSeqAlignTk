@@ -33,7 +33,7 @@ An object of ggplot2.
 This function visualizes the alignment coverage using an area chart.
 By default, the upper and lower directions of the y-axis represent
 the alignment coverage of the reads
-aligned in the forward and reversed strands, respectively.
+aligned in the forward and reverse strands, respectively.
 }
 \examples{
 output_dpath <- tempdir()

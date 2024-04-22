@@ -158,8 +158,8 @@
     write.table(alncov@forward,
                 file.path(output_dpath, 'coverage_forward.txt'),
                 col.names = TRUE, row.names = FALSE, quote = FALSE, sep = '\t')
-    write.table(alncov@reversed,
-                file.path(output_dpath, 'coverage_reversed.txt'),
+    write.table(alncov@reverse,
+                file.path(output_dpath, 'coverage_reverse.txt'),
                 col.names = TRUE, row.names = FALSE, quote = FALSE, sep = '\t')
     fdata <- plot(alncov)
     ggsave(file.path(output_dpath, 'coverage_figure.png'),
@@ -402,7 +402,7 @@
                     type = 'tabs',
                     tabPanel('Figure',
                              h3('Alignment Coverage'),
-                             p('A plot showing the alignment coverage of the reads to the reference sequence. The upper and lower directions of the y-axis represent the alignment coverage of the reads aligned in the forward and reversed strands, respectively.'),
+                             p('A plot showing the alignment coverage of the reads to the reference sequence. The upper and lower directions of the y-axis represent the alignment coverage of the reads aligned in the forward and reverse strands, respectively.'),
                              plotlyOutput('alignment_summary_figure')),
                     tabPanel('Forward Coverage',
                              h3('Coverage of Forward Reads'),
@@ -410,8 +410,8 @@
                              tableOutput("forward_alncov")),
                     tabPanel('Reversed Coverage',
                              h3('Coverage of Reversed Reads'),
-                             p('A matrix containing the alignment coverage of the reversed strand reads.'),
-                             tableOutput("reversed_alncov"))
+                             p('A matrix containing the alignment coverage of the reverse strand reads.'),
+                             tableOutput("reverse_alncov"))
                 )
             )
         )
@@ -553,8 +553,8 @@
         output$forward_alncov <- renderTable({
             data.frame(rv$outputs$alncov@forward)
             })
-        output$reversed_alncov <- renderTable({
-            data.frame(rv$outputs$alncov@reversed)
+        output$reverse_alncov <- renderTable({
+            data.frame(rv$outputs$alncov@reverse)
             })
         output$alignment_summary_figure <- renderPlotly({
             ggplotly(plot(rv$outputs$alncov))

@@ -81,15 +81,15 @@ setClass('CircSeqAlignTkAlign',
 #'
 #' @slot forward A matrix containing the alignment coverage of
 #'     the forward strand reads.
-#' @slot reversed A matrix containing the alignment coverage of
-#'     the reversed strand reads.
+#' @slot reverse A matrix containing the alignment coverage of
+#'     the reverse strand reads.
 #' @slot .figdata A string of adapter sequence.
 #' @seealso \code{\link{calc_coverage}}
 #' @export
 setClass('CircSeqAlignTkCoverage',
          slots = c(
              forward = 'matrix',
-             reversed = 'matrix',
+             reverse = 'matrix',
              .figdata = 'data.frame'
          ))
 
