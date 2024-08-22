@@ -33,3 +33,9 @@ browseVignettes('CircSeqAlignTk')
 ```
 
 
+## Reference
+
+Sun J, Fu X and Cao W. CircSeqAlignTk: An R package for end-to-end analysis of RNA-seq data for circular genomes. F1000Research 2024, 11:1221. doi: [10.12688/f1000research.127348.2](https://doi.org/10.12688/f1000research.127348.2).
+
+
+

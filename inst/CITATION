@@ -1,0 +1,15 @@
+citEntry(entry="article",
+         title = "An R package for end-to-end analysis of RNA-seq data for circular genomes",
+         author = personList(as.person("Jianqiang Sun"),
+                             as.person("Xi Fu"),
+                             as.person("Wei Cao")),
+         year = 2024,
+         journal = "F1000Research",
+         doi = "10.12688/f1000research.127348.2",
+         volume = 11,
+         pages = 1221,
+         textVersion = paste("Sun J, Fu X, Cao W.", 
+               "An R package for end-to-end analysis of RNA-seq data for circular genomes.",
+               "F1000Research 2024, 11:1221.",
+               "doi: //doi.org/10.12688/f1000research.127348.2"))
+

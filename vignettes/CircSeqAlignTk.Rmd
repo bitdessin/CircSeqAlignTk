@@ -57,7 +57,7 @@ set.seed(1)
 
 # Installation
 
-To install the `r Biocpkg('CircSeqAlignTk')` package,
+To install the `r Biocpkg('CircSeqAlignTk')` package [@circseqaligntk],
 start R (≥ 4.2) and run the following steps:
 
 ```{r install_package, eval=FALSE}
@@ -151,7 +151,7 @@ trimming adapter sequences from the sequence reads is required,
 because most sequence reads in this FASTQ format file contain adapters
 with sequence "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".
 Here, we use [AdapterRemoval](https://adapterremoval.readthedocs.io/en/stable/)
-(@adapterremoval) implemented in the `r Biocpkg('Rbowtie2')` [@rbowtie2] package
+(@adapterremoval) implemented in the `r Biocpkg('Rbowtie2')` package [@rbowtie2]
 to trim the adapters before aligning the sequence reads.
 Note that the length of small RNAs derived from viroids
 is known to be in the range of 21–24 nt.
