@@ -4,7 +4,7 @@ Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
 Version: 1.11.0
 Authors@R: 
     c(person("Jianqiang", "Sun",
-                email = "sun@biunit.dev",
+                email = "sun@bitdessin.dev",
                 role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-3438-3199")),
       person("Xi", "Fu", role = c("ctb")),
