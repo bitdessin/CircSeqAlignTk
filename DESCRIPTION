@@ -1,7 +1,7 @@
 Package: CircSeqAlignTk
 Type: Package
 Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
-Version: 1.11.0
+Version: 1.11.1
 Authors@R: 
     c(person("Jianqiang", "Sun",
                 email = "sun@bitdessin.dev",
@@ -10,13 +10,15 @@ Authors@R:
       person("Xi", "Fu", role = c("ctb")),
       person("Wei", "Cao", role = c("ctb")))
 Description: 
-    CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis
-    of circular genome sequences, from alignment to visualization.
-    It mainly targets viroids which are composed of 246-401 nt circular RNAs.
-    In addition, CircSeqAlignTk implements a tidy interface
-    to generate synthetic sequencing data that mimic real RNA-Seq data,
-    allowing developers to evaluate the performance of alignment tools
-    and workflows.
+    CircSeqAlignTk is an end-to-end toolkit for RNA-Seq data analysis of
+    circular genome sequences, supporting tasks from alignment to visualization.
+    It is primarily designed for studying viroids, which are small, circular RNAs
+    typically composed of a few hundred nucleotides.
+    In addition to analysis capabilities, CircSeqAlignTk provides a streamlined
+    interface for generating synthetic RNA-Seq data that closely mimics real datasets.
+    This functionality enables developers to benchmark alignment tools,
+    test novel alignment algorithms, and validate new workflows.
+    This vignette offers an overview of CircSeqAlignTk and demonstrates its usage.
 Depends: R (>= 4.2)
 Imports:
     stats,

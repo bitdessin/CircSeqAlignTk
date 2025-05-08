@@ -1,16 +1,8 @@
 ---
-title: "CircSeqAlignTk: An R package for end-to-end analysis of RNA-seq data for circular genomes"
-date: "Modified: 16, October, 2022. Compiled: `r format(Sys.time(), '%d %B, %Y')`"
+title: "Documentation"
+date: "Updated: 3, June, 2025. Compiled: `r format(Sys.time(), '%Y-%m-%d')`"
 author:
     - name: Jianqiang Sun
-      affiliation: |
-        Research Center for Agricultural Information Technology,
-        National Agriculture and Food Research Organization, Japan
-    - name: Xi Fu
-      affiliation: |
-        Graduate School of Agricultural and Life Sciences, 
-        The University of Tokyo, Japan
-    - name: Wei Cao
       affiliation: |
         Research Center for Agricultural Information Technology,
         National Agriculture and Food Research Organization, Japan
@@ -25,20 +17,19 @@ bibliography: references.bib
 package: CircSeqAlignTk
 fontsize: 14pt
 vignette: |
-    %\VignetteIndexEntry{CircSeqAlignTk}
+    %\VignetteIndexEntry{Documentation}
     %\VignetteEncoding{UTF-8}
-    %\VignettePackage{CircSeqAlignTk}
     %\VignetteEngine{knitr::rmarkdown}
 abstract: |
-    CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis
-    of circular genome sequences, from alignment to visualization.
-    It mainly targets viroids which are composed of 246-401 nt circular RNAs.
-    In addition, CircSeqAlignTk implements a tidy interface
-    to generate synthetic sequencing data that mimic real RNA-Seq data,
-    allowing developers to evaluate the performance of alignment tools,
-    new alignment algorithms, and new workflows.
-    This vignette provides an overview of CircSeqAlignTk
-    and a detailed explanation of the manner in which it is used.
+    *CircSeqAlignTk* is an end-to-end toolkit for RNA-Seq data analysis of
+    circular genome sequences, supporting tasks from alignment to visualization.
+    It is primarily designed for studying viroids, which are small, circular RNAs
+    typically composed of a few hundred nucleotides.
+    In addition to analysis capabilities, *CircSeqAlignTk* provides a streamlined
+    interface for generating synthetic RNA-Seq data that closely mimics real datasets.
+    This functionality enables developers to benchmark alignment tools,
+    test novel alignment algorithms, and validate new workflows.
+    This vignette offers an overview of *CircSeqAlignTk* and demonstrates its usage.
 ---
 
 ```{r style, echo=FALSE, results='hide', message=FALSE}
@@ -53,6 +44,33 @@ set.seed(1)
 ```
 
 
+# Introduction
+
+Viroids are small, single-stranded, circular non-coding RNAs, typically composed
+of only a few hundred nucleotides \[@Hull\_2014; @Flores\_2015; @Gago\_2016].
+Lacking protein-coding ability, they hijack host plant enzymes for replication,
+spreading systemically within the plant and transmitting to other individuals.
+Because there are no effective treatments for viroid infections,
+all infected plants must be destroyed, posing a serious threat to agriculture.
+Moreover, each viroid species harbors many genetic variants, which differ in
+virulence—ranging from asymptomatic to causing severe stunting or even plant death.
+
+Sequencing small RNAs from viroid-infected plants can help uncover the molecular
+mechanisms of infection and ultimately inform prevention strategies.
+A basic RNA-Seq approach involves aligning viroid-derived short reads
+to the viroid RNA reference to quantify expression abundance.
+However, since viroids are circular RNAs, alignment must account for reads
+that span the artificial "ends" of linearized reference sequences.
+
+*CircSeqAlignTk* is an R package that provides an end-to-end solution for
+RNA-Seq data analysis of circular genomes, especially for viroids.
+It includes both command-line and graphical interfaces,
+covering steps from read alignment to visualization.
+The toolkit is user-friendly and well-documented,
+making it accessible to both beginners and experienced users.
+Additionally, it features a simulation engine
+that generates synthetic sequencing data resembling real RNA-Seq output,
+enabling robust benchmarking of alignment tools, algorithm development, and workflow testing.
 
 
 # Installation
@@ -63,12 +81,12 @@ start R (≥ 4.2) and run the following steps:
 ```{r install_package, eval=FALSE}
 if (!requireNamespace('BiocManager', quietly = TRUE))
     install.packages('BiocManager')
+
 BiocManager::install('CircSeqAlignTk')
 ```
 
 Note that to install the latest version of the `r Biocpkg('CircSeqAlignTk')`
 package, the latest version of R is required.
-
 
 
 # Preparation of working directory
@@ -92,7 +110,6 @@ users can specify a folder on the desktop or elsewhere,
 depending on the analysis project.
 For example:
 
-
 ```{r quick_start__ws, eval=FALSE}
 ws <- '~/desktop/viroid_project'
 ```
@@ -101,23 +118,17 @@ ws <- '~/desktop/viroid_project'
 
 # Quick start
 
+The typical workflow for analyzing RNA-Seq data from viroid-infected plants,
+particularly small RNA sequencing, consists of the following steps:
+(i) filter reads to retain only those between 21 and 24 nucleotides in length,
+as viroid-derived small RNAs predominantly fall within this range;
+(ii) align the filtered reads to viroid genome sequences; and
+(iii) visualize read coverage across the genome to identify regions associated
+with pathogenicity.
 
-Viroids are composed of 246-401 nt, single-stranded circular non-coding RNAs
-[@Hull_2014; @Flores_2015; @Gago_2016].
-Sequencing small RNAs from viroid-infected plants
-could offer insights regarding the mechanisms of infection
-and eventually help prevent these infections in plants.
-The common workflow for analyzing such data involves the following steps:
-(i) limit read-length between 21 and 24 nt,
-as small RNAs derived from viroids are known to be in this range,
-(ii) align these reads to viroid genome sequences,
-and (iii) visualize the coverage of alignment
-to identify the pathogenic region of the viroid.
-This section demonstrates the workflow using a sample RNA-Seq dataset.
-It includes workflow from the FASTQ format file
-to the visualization of the analyzed results,
-for analyzing small RNA-seq data sequenced from viroid-infected plants.  
-
+This section demonstrates the complete workflow using a sample RNA-Seq dataset.
+It covers the full analysis pipeline, from a FASTQ file to coverage visualization,
+tailored for studying small RNAs derived from viroid-infected plant cells.
 
 The FASTQ format file used in this section
 is attached in the `r Biocpkg('CircSeqAlignTk')` package
@@ -125,8 +136,6 @@ and can be obtained using the `system.file` function.
 This FASTQ format file contains 29,178 sequence reads of small RNAs
 that were sequenced from a tomato plant
 infected with the potato spindle tuber viroid (PSTVd) isolate Cen-1 (FR851463).
-
-
 
 ```{r quick_start__preparation_fastq}
 fq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'srna.fq.gz')

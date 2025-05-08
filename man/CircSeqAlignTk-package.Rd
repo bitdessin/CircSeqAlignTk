@@ -6,7 +6,7 @@
 \alias{CircSeqAlignTk-package}
 \title{CircSeqAlignTk: A toolkit for end-to-end analysis of RNA-seq data for circular genomes}
 \description{
-CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis of circular genome sequences, from alignment to visualization. It mainly targets viroids which are composed of 246-401 nt circular RNAs. In addition, CircSeqAlignTk implements a tidy interface to generate synthetic sequencing data that mimic real RNA-Seq data, allowing developers to evaluate the performance of alignment tools and workflows.
+CircSeqAlignTk is an end-to-end toolkit for RNA-Seq data analysis of circular genome sequences, supporting tasks from alignment to visualization. It is primarily designed for studying viroids, which are small, circular RNAs typically composed of a few hundred nucleotides. In addition to analysis capabilities, CircSeqAlignTk provides a streamlined interface for generating synthetic RNA-Seq data that closely mimics real datasets. This functionality enables developers to benchmark alignment tools, test novel alignment algorithms, and validate new workflows. This vignette offers an overview of CircSeqAlignTk and demonstrates its usage.
 }
 \details{
 Refer to the vignette for an overview of the package,
@@ -25,7 +25,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jianqiang Sun \email{sun@biunit.dev} (\href{https://orcid.org/0000-0002-3438-3199}{ORCID})
+\strong{Maintainer}: Jianqiang Sun \email{sun@bitdessin.dev} (\href{https://orcid.org/0000-0002-3438-3199}{ORCID})
 
 Other contributors:
 \itemize{
