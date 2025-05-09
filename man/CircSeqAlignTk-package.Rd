@@ -4,9 +4,9 @@
 \name{CircSeqAlignTk-package}
 \alias{CircSeqAlignTk}
 \alias{CircSeqAlignTk-package}
-\title{CircSeqAlignTk: A toolkit for end-to-end analysis of RNA-seq data for circular genomes}
+\title{CircSeqAlignTk: End-to-End Analysis of Small RNA-Seq Data from Viroids}
 \description{
-CircSeqAlignTk is an end-to-end toolkit for RNA-Seq data analysis of circular genome sequences, supporting tasks from alignment to visualization. It is primarily designed for studying viroids, which are small, circular RNAs typically composed of a few hundred nucleotides. In addition to analysis capabilities, CircSeqAlignTk provides a streamlined interface for generating synthetic RNA-Seq data that closely mimics real datasets. This functionality enables developers to benchmark alignment tools, test novel alignment algorithms, and validate new workflows. This vignette offers an overview of CircSeqAlignTk and demonstrates its usage.
+CircSeqAlignTk is a toolkit for the analysis of RNA-Seq data derived from circular genome sequences, with a primary focus on viroids, circular RNAs typically consisting of a few hundred nucleotides. The toolkit supports an end-to-end analysis pipeline, from alignment to visualization.
 }
 \details{
 Refer to the vignette for an overview of the package,
@@ -19,8 +19,8 @@ browseVignettes("CircSeqAlignTk")
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/jsun/CircSeqAlignTk}
-  \item Report bugs at \url{https://github.com/jsun/CircSeqAlignTk/issues}
+  \item \url{https://github.com/bitdessin/CircSeqAlignTk}
+  \item Report bugs at \url{https://github.com/bitdessin/CircSeqAlignTk/issues}
 }
 
 }

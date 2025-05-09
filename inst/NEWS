@@ -1,3 +1,18 @@
+CHANGES IN VERSION 1.11.2 (2025-05-09)
+--------------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Remove `get_slot_contents` function. Use `slot` function instead.
+    
+    o Change default aligner to HISAT2 from Bowtie2.
+    
+    o Change repository.
+    
+    o Update documentation.
+    
+
+
 CHANGES IN VERSION 1.5.2 (2024-04-23)
 --------------------------------------
 

@@ -1,14 +1,15 @@
 # CircSeqAlignTk
 
+**End-to-End Analysis of Small RNA-Seq Data from Viroids**
+
 *CircSeqAlignTk* is an end-to-end toolkit for RNA-Seq data analysis of
 circular genome sequences, supporting tasks from alignment to visualization.
-It is primarily designed for studying viroids, which are small, circular RNAs
-typically composed of a few hundred nucleotides.
+It is primarily designed for studying viroids, which are small,
+circular RNAs typically composed of a few hundred nucleotides.
 In addition to analysis capabilities, *CircSeqAlignTk* provides a streamlined
-interface for generating synthetic RNA-Seq data that closely mimics real datasets.
-This functionality enables developers to benchmark alignment tools,
-test novel alignment algorithms, and validate new workflows.
-This vignette offers an overview of *CircSeqAlignTk* and demonstrates its usage.
+interface for generating synthetic RNA-Seq data that closely mimics real
+datasets. This functionality enables developers to benchmark alignment
+tools, test novel alignment algorithms, and validate new workflows.
 
 
 # Installation

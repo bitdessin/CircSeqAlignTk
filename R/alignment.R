@@ -47,7 +47,7 @@
 #' @importFrom Biostrings DNAStringSet writeXStringSet
 #' @export
 build_index <- function(input, output = NULL, n_threads = 1, overwrite = TRUE,
-                        aligner = c('bowtie2', 'hisat2'), add_args = NULL) {
+                        aligner = c('hisat2', 'bowtie2'), add_args = NULL) {
     aligner <- match.arg(aligner)
     check_files(input)
     if (is.null(output)) stop('Set `output` to specify a directory',
@@ -231,12 +231,12 @@ filter_reads <- function(input, output,
 #'                    output = file.path(output_dpath, 'align_results'))
 #'
 #' slot(aln, 'stats')
-#' @importFrom methods new
+#' @importFrom methods new slot
 #' @export
 align_reads <- function(input, index, output,
                         n_threads = 1, n_mismatch = 1,
                         overwrite = TRUE,
-                        aligner = c('bowtie2', 'hisat2'),
+                        aligner = c('hisat2', 'bowtie2'),
                         add_args = NULL) {
     aligner <- match.arg(aligner)
 
@@ -288,7 +288,7 @@ align_reads <- function(input, index, output,
                          index, output, input, n_threads, overwrite) {
     dest <- NULL
     output_sam <- paste0(tempfile(), '.sam')
-
+    
     if (is.null(add_args)) add_args <- ''
 
     if (check_cmd(aligner)) {
@@ -315,11 +315,12 @@ align_reads <- function(input, index, output,
             hisat2_args$type <- 'single'
             hisat2_args$force <- overwrite
             hisat2_args$threads <- n_threads
+            
             do.call('hisat2', hisat2_args)
             remove_files(decompressed_input)
         }
     }
-
+    
     dest <- asBam(output_sam)
     sortBam(dest, file_path_sans_ext(output))
     indexBam(output)

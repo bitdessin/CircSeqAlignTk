@@ -1,7 +1,7 @@
 Package: CircSeqAlignTk
 Type: Package
-Title: A toolkit for end-to-end analysis of RNA-seq data for circular genomes
-Version: 1.11.1
+Title: End-to-End Analysis of Small RNA-Seq Data from Viroids
+Version: 1.11.2
 Authors@R: 
     c(person("Jianqiang", "Sun",
                 email = "sun@bitdessin.dev",
@@ -9,16 +9,12 @@ Authors@R:
            comment = c(ORCID = "0000-0002-3438-3199")),
       person("Xi", "Fu", role = c("ctb")),
       person("Wei", "Cao", role = c("ctb")))
-Description: 
-    CircSeqAlignTk is an end-to-end toolkit for RNA-Seq data analysis of
-    circular genome sequences, supporting tasks from alignment to visualization.
-    It is primarily designed for studying viroids, which are small, circular RNAs
-    typically composed of a few hundred nucleotides.
-    In addition to analysis capabilities, CircSeqAlignTk provides a streamlined
-    interface for generating synthetic RNA-Seq data that closely mimics real datasets.
-    This functionality enables developers to benchmark alignment tools,
-    test novel alignment algorithms, and validate new workflows.
-    This vignette offers an overview of CircSeqAlignTk and demonstrates its usage.
+Description:
+    CircSeqAlignTk is a toolkit for the analysis of RNA-Seq data
+    derived from circular genome sequences, with a primary focus on viroids,
+    circular RNAs typically consisting of a few hundred nucleotides.
+    The toolkit supports an end-to-end analysis pipeline,
+    from alignment to visualization.
 Depends: R (>= 4.2)
 Imports:
     stats,
@@ -56,5 +52,5 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-URL: https://github.com/jsun/CircSeqAlignTk
-BugReports: https://github.com/jsun/CircSeqAlignTk/issues
+URL: https://github.com/bitdessin/CircSeqAlignTk
+BugReports: https://github.com/bitdessin/CircSeqAlignTk/issues

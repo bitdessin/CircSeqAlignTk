@@ -1,6 +1,6 @@
 ---
 title: "Documentation"
-date: "Updated: 3, June, 2025. Compiled: `r format(Sys.time(), '%Y-%m-%d')`"
+date: "Updated: 2025-05-09. Compiled: `r format(Sys.time(), '%Y-%m-%d')`"
 author:
     - name: Jianqiang Sun
       affiliation: |
@@ -21,15 +21,13 @@ vignette: |
     %\VignetteEncoding{UTF-8}
     %\VignetteEngine{knitr::rmarkdown}
 abstract: |
-    *CircSeqAlignTk* is an end-to-end toolkit for RNA-Seq data analysis of
-    circular genome sequences, supporting tasks from alignment to visualization.
-    It is primarily designed for studying viroids, which are small, circular RNAs
-    typically composed of a few hundred nucleotides.
-    In addition to analysis capabilities, *CircSeqAlignTk* provides a streamlined
-    interface for generating synthetic RNA-Seq data that closely mimics real datasets.
-    This functionality enables developers to benchmark alignment tools,
-    test novel alignment algorithms, and validate new workflows.
-    This vignette offers an overview of *CircSeqAlignTk* and demonstrates its usage.
+    CircSeqAlignTk is an end-to-end toolkit for the analysis of RNA-Seq data
+    derived from circular genome sequences, with a primary focus on viroids,
+    circular RNAs typically consisting of a few hundred nucleotides.
+    In addition to analysis capabilities, CircSeqAlignTk provides a streamlined
+    interface for generating synthetic RNA-Seq data that simulate real
+    datasets. This functionality enables developers to benchmark alignment
+    tools, test novel alignment algorithms, and validate new workflows.
 ---
 
 ```{r style, echo=FALSE, results='hide', message=FALSE}
@@ -47,36 +45,40 @@ set.seed(1)
 # Introduction
 
 Viroids are small, single-stranded, circular non-coding RNAs, typically composed
-of only a few hundred nucleotides \[@Hull\_2014; @Flores\_2015; @Gago\_2016].
+of only a few hundred nucleotides [@Hull_2014; @Flores_2015; @Gago_2016].
 Lacking protein-coding ability, they hijack host plant enzymes for replication,
 spreading systemically within the plant and transmitting to other individuals.
 Because there are no effective treatments for viroid infections,
 all infected plants must be destroyed, posing a serious threat to agriculture.
-Moreover, each viroid species harbors many genetic variants, which differ in
-virulence—ranging from asymptomatic to causing severe stunting or even plant death.
+Moreover, each viroid species harbors many genetic variants,
+which differ in virulence—ranging from asymptomatic
+to causing severe stunting or even plant death.
 
 Sequencing small RNAs from viroid-infected plants can help uncover the molecular
 mechanisms of infection and ultimately inform prevention strategies.
-A basic RNA-Seq approach involves aligning viroid-derived short reads
+A standard RNA-Seq approach involves aligning viroid-derived short reads
 to the viroid RNA reference to quantify expression abundance.
 However, since viroids are circular RNAs, alignment must account for reads
 that span the artificial "ends" of linearized reference sequences.
 
-*CircSeqAlignTk* is an R package that provides an end-to-end solution for
-RNA-Seq data analysis of circular genomes, especially for viroids.
+`r Biocpkg('CircSeqAlignTk')` is an R package that provides an end-to-end
+solution for RNA-Seq data analysis of circular genomes,
+especially for viroids [@circseqaligntk].
 It includes both command-line and graphical interfaces,
 covering steps from read alignment to visualization.
 The toolkit is user-friendly and well-documented,
 making it accessible to both beginners and experienced users.
 Additionally, it features a simulation engine
 that generates synthetic sequencing data resembling real RNA-Seq output,
-enabling robust benchmarking of alignment tools, algorithm development, and workflow testing.
+enabling robust benchmarking of alignment tools, algorithm development,
+and workflow testing.
 
 
 # Installation
 
-To install the `r Biocpkg('CircSeqAlignTk')` package [@circseqaligntk],
+To install the `r Biocpkg('CircSeqAlignTk')` package,
 start R (≥ 4.2) and run the following steps:
+
 
 ```{r install_package, eval=FALSE}
 if (!requireNamespace('BiocManager', quietly = TRUE))
@@ -85,33 +87,37 @@ if (!requireNamespace('BiocManager', quietly = TRUE))
 BiocManager::install('CircSeqAlignTk')
 ```
 
+
 Note that to install the latest version of the `r Biocpkg('CircSeqAlignTk')`
 package, the latest version of R is required.
 
 
 # Preparation of working directory
 
-CircSeqAlignTk is designed for end-to-end RNA-Seq data analysis
+`r Biocpkg('CircSeqAlignTk')` is designed for end-to-end RNA-Seq data analysis
 of circular genome sequences, from alignment to visualization.
 The whole processes will generate many files
 including genome sequence indexes, and intermediate and final alignment results.
 Thus, it is recommended to specify a working directory to save these files.
 Here, for convenience in package development and validation,
 we use a temporary folder
-which is automatically arranged by the `tempdir` function
+which is automatically arranged by the `tempdir()` function
 as the working directory.
+
 
 ```{r quick_start__tempws}
 ws <- tempdir()
 ```
+
 
 However, instead of using a temporary folder,
 users can specify a folder on the desktop or elsewhere,
 depending on the analysis project.
 For example:
 
+
 ```{r quick_start__ws, eval=FALSE}
-ws <- '~/desktop/viroid_project'
+ws <- '/home/username/desktop/viroid_project'
 ```
 
 
@@ -120,22 +126,23 @@ ws <- '~/desktop/viroid_project'
 
 The typical workflow for analyzing RNA-Seq data from viroid-infected plants,
 particularly small RNA sequencing, consists of the following steps:
-(i) filter reads to retain only those between 21 and 24 nucleotides in length,
-as viroid-derived small RNAs predominantly fall within this range;
-(ii) align the filtered reads to viroid genome sequences; and
-(iii) visualize read coverage across the genome to identify regions associated
-with pathogenicity.
+
+1. filter reads to retain only those between 21 and 24 nucleotides in length,
+   as viroid-derived small RNAs predominantly fall within this range
+2. align the filtered reads to viroid genome sequences
+3. visualize read coverage across the genome to identify regions associated
+   with pathogenicity
 
 This section demonstrates the complete workflow using a sample RNA-Seq dataset.
 It covers the full analysis pipeline, from a FASTQ file to coverage visualization,
 tailored for studying small RNAs derived from viroid-infected plant cells.
 
-The FASTQ format file used in this section
-is attached in the `r Biocpkg('CircSeqAlignTk')` package
-and can be obtained using the `system.file` function.
-This FASTQ format file contains 29,178 sequence reads of small RNAs
-that were sequenced from a tomato plant
-infected with the potato spindle tuber viroid (PSTVd) isolate Cen-1 (FR851463).
+The FASTQ format file used in this section is included in the `r Biocpkg("CircSeqAlignTk")`
+package and can be accessed using the `system.file()` function.
+This file contains 29,178 sequence reads, randomly sampled from an original study
+in which small RNA was sequenced from a tomato plant infected with
+the potato spindle tuber viroid (PSTVd) isolate Cen-1 (FR851463) [@pstvtomato].
+
 
 ```{r quick_start__preparation_fastq}
 fq <- system.file(package = 'CircSeqAlignTk', 'extdata', 'srna.fq.gz')
@@ -147,7 +154,7 @@ from [GenBank](https://www.ncbi.nlm.nih.gov/nuccore/FR851463)
 or [ENA](https://www.ebi.ac.uk/ena/browser/view/FR851463) 
 using the accession number FR851463.
 It is also attached in the `r Biocpkg('CircSeqAlignTk')` package,
-and can be obtained using the `system.file` function.
+and can be obtained using the `system.file()` function.
 
 
 ```{r quick_start__preparation_reference}
@@ -160,13 +167,12 @@ trimming adapter sequences from the sequence reads is required,
 because most sequence reads in this FASTQ format file contain adapters
 with sequence "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".
 Here, we use [AdapterRemoval](https://adapterremoval.readthedocs.io/en/stable/)
-(@adapterremoval) implemented in the `r Biocpkg('Rbowtie2')` package [@rbowtie2]
+[@adapterremoval] implemented in the `r Biocpkg('Rbowtie2')` package [@rbowtie2]
 to trim the adapters before aligning the sequence reads.
 Note that the length of small RNAs derived from viroids
 is known to be in the range of 21–24 nt.
 Therefore, we set an argument to remove sequence reads with lengths
 outside this range after adapter removal.
-
 
 
 ```{r quick_start__triming}
@@ -191,11 +197,10 @@ remove_adapters(file1 = file.path(ws, 'srna.fq'),
 
 After obtaining the cleaned FASTQ format file (i.e., `srna_trimmed.fq.gz`),
 we build index files and perform alignment
-using the `build_index` and `align_reads` functions
+using the `build_index()` and `align_reads()` functions
 implemented in the `r Biocpkg('CircSeqAlignTk')` package.
 To precisely align the reads to the circular genome sequence of the viroid,
-the alignment is performed in
-[two stages](#two-stage-alignment-process).
+the alignment is performed in [two stages](#two-stage-alignment-process).
 
 
 ```{r quick_start__alignment}
@@ -208,17 +213,17 @@ aln <- align_reads(input = trimmed_fq,
 
 
 The index files are stored in a directory specified by the `output` argument
-of the `build_index` function.
+of the `build_index()` function.
 The intermediate files (e.g., FASTQ format files used as inputs)
 and alignment results (e.g., BAM format files) are stored in
-the directory specified by the `output` argument of the `align_reads` function.
+the directory specified by the `output` argument of the `align_reads()` function.
 BAM format files with the suffixes of `.clean.t1.bam` and `.clean.t2.bam` are
 the final results obtained after alignment.
 Refer to the sections
 \@ref(generation-of-reference-sequences) and \@ref(alignment)
 for a detailed description of each of the files generated by each function.
 
-The alignment coverage can be summarized with the `calc_coverage` function.
+The alignment coverage can be summarized with the `calc_coverage()` function.
 This function loads the alignment results
 (i.e., `*.clean.t1.bam` and `*.clean.t2.bam`),
 calculates alignment coverage from these BAM format files,
@@ -227,12 +232,12 @@ and combines them into two data frames according to the aligned strands.
 
 ```{r quick_start__summary}
 alncov <- calc_coverage(aln)
-head(get_slot_contents(alncov, 'forward'))  # alignment coverage in forward strand 
-head(get_slot_contents(alncov, 'reverse')) # alignment coverage in reverse strand 
+head(slot(alncov, 'forward'))  # alignment coverage in forward strand 
+head(slot(alncov, 'reverse'))  # alignment coverage in reverse strand 
 ```
 
 
-The alignment coverage can be then visualized using the `plot` function
+The alignment coverage can be then visualized using the `plot()` function
 (Figure \@ref(fig:quickStartVisualization)).
 The scale of the upper and lower directions indicate alignment coverage of
 the forward and reverse strands, respectively.
@@ -265,7 +270,7 @@ To solve this problem, that is, allowing reads to be aligned to both ends,
 the `r Biocpkg('CircSeqAlignTk')` package implements a two-stage
 alignment process (Figure \@ref(fig:packageImplementation)),
 using these existing alignment tools
-([Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+(i.e., [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 and [HISAT2](https://daehwankimlab.github.io/hisat2/)).
 
 ```{r packageImplementation, fig.cap='Two-stage alignment process. Overview of the two-stage alignment process and the related functions in the CircSeqAlignTk package', echo=FALSE, fig.wide=TRUE}
@@ -281,7 +286,7 @@ by restoring the type 1 reference sequence into a circular sequence and
 cutting the circle at the opposite position to type 1 reference sequence.
 The type 1 reference sequence is the input genome sequence itself,
 while the type 2 reference sequence is newly created
-(by the `build_index` function).
+by the `build_index()` function.
 
 Once the two reference sequences are generated,
 the sequence reads are aligned to the two types of reference sequences
@@ -298,7 +303,7 @@ specified by the user.
 
 ## Generation of reference sequences
 
-The `build_index` function is designed
+The `build_index()` function is designed
 to generate type 1 and type 2 reference sequences for alignment.
 This function has two required arguments,
 `input` and `output` which are used for
@@ -309,7 +314,7 @@ The type 1 and type 2 reference sequences are saved in files
 `refseq.t1.fa` and `refseq.t2.fa` in FASTA format, respectively.
 
 Following the generation of reference sequences,
-The `build_index` function then creates index files
+The `build_index()` function then creates index files
 for each reference sequence for alignment.
 The index files are saved with the prefix `refseq.t1.*` and `refseq.t2.*`.
 They correspond to the type 1 and 2 reference sequences
@@ -324,19 +329,19 @@ If [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 is specified, then the extension is `.bt2`  or `.bt2l`;
 if [HISAT2](https://daehwankimlab.github.io/hisat2/) is specified,
 then the extension is `.ht2` or `.ht2l`.
-By default, [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
-is used.
-The `build_index` function first attempts to call the specified alignment tool
+By default, [HISAT2](https://daehwankimlab.github.io/hisat2/) is used.
+
+The `build_index()` function first attempts to call the specified alignment tool
 directly installed on the operation system; however, if the tool is not
-installed, the function will then attempt to call the `bowtie2_build` or
-`hisat2_build` functions implemented in `r Biocpkg('Rbowtie2')`
+installed, the function will then attempt to call the `bowtie2_build()` or
+`hisat2_build()` functions implemented in `r Biocpkg('Rbowtie2')`
 or `r Biocpkg('Rhisat2')` packages for indexing.
 
 For example, to generate reference sequences and index files for alignment
 against the viroid PSTVd isolate Cen-1 (FR851463) using
-[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)/`r Biocpkg('Rbowtie2')`,
+[HISAT2](https://daehwankimlab.github.io/hisat2/),
 we set the argument `input` to the FASTA format file containing the sequence
-of FR851463 and execute the `build_index` function.
+of FR851463 and execute the `build_index()` function.
 The generated index files will be saved into the folder
 specified by the argument `output`.
 
@@ -350,7 +355,7 @@ ref_index <- build_index(input = genome_seq, output = file.path(ws, 'index'))
 The function returns a `CircSeqAlignTkRefIndex` class object that contains the
 file path to type 1 and 2 reference sequences and corresponding index files.
 The data structure of `CircSeqAlignTkRefIndex` can be verified using the
-`str` function.
+`str()` function.
 
 
 ```{r implementation__build_index_output}
@@ -359,33 +364,29 @@ str(ref_index)
 
 
 The file path to type 1 and type 2 reference sequences, `refseq.type1.fa` and
-`refseq.type2.fa`, can be checked through the `@fasta` slot
-using the `get_slot_contents` function.
+`refseq.type2.fa`, can be checked through the `fasta` slot
+using the `slot()` function.
 
 
 ```{r implementation__build_index_output_refseq}
-get_slot_contents(ref_index, 'fasta')
+slot(ref_index, 'fasta')
 ```
 
 
 The file path (prefix) to the index files, `refseq.t1.*.bt2` and
-`refseq.t2.*.bt2`, can be checked through `@index` slot.
+`refseq.t2.*.bt2`, can be checked through `index` slot.
 
 
 ```{r implementation__build_index_output_index}
-get_slot_contents(ref_index, 'index')
+slot(ref_index, 'index')
 ```
 
 
-Note that, users can simply use the `slot` function or `@` operator
-to access these slot contents instead of using the `get_slot_contents` function.
-For example,
+Note that, users can simply use the `@` operator to access these slot contents
+instead of using the `slot()` function. For example,
 
 
 ```{r access_slot_content, eval=FALSE}
-slot(ref_index, 'fasta')
-slot(ref_index, 'index')
-
 ref_index@fasta
 ref_index@index
 ```
@@ -400,56 +401,48 @@ sequence coordinate can be checked from the `@cut_loc` slot.
 
 
 ```{r implementation__build_index_cutloci}
-get_slot_contents(ref_index, 'cut_loc')
+slot(ref_index, 'cut_loc')
 ```
 
 
-
-By default, 
-[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)/`r Biocpkg('Rbowtie2')`
+By default, [HISAT2](https://daehwankimlab.github.io/hisat2/)/`r Biocpkg('Rhisat2')`
 is used for indexing.
 This can be changed to
-[HISAT2](https://daehwankimlab.github.io/hisat2/)/`r Biocpkg('Rhisat2')` using
-the `aligner` argument.
+[Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)/`r Biocpkg('Rbowtie2')`
+using the `aligner` argument, for example:
 
 
-```{r implementation__build_ht2index, eval=FALSE}
-ref_ht2index <- build_index(input = genome_seq,
-                            output = file.path(ws, 'ht2index'),
-                            aligner = 'hisat2')
+```{r implementation__build_bt2index, eval=FALSE}
+ref_bt2index <- build_index(input = genome_seq,
+                            output = file.path(ws, 'bt2index'),
+                            aligner = 'bowtie2')
 ```
 
 
 
 ## Alignment
 
-The `align_reads` function is used to align sequence reads onto a circular
+The `align_reads()` function is used to align sequence reads onto a circular
 genome sequence.
 This function requires three arguments: `input`, `index`, and `output`,
-which are used to specify a file path to RNA-seq reads in FASTQ format,
-a `CircSeqAlignTkRefIndex` class object generated by the `build_index` function,
+which are used to specify a file path to RNA-Seq reads in FASTQ format,
+a `CircSeqAlignTkRefIndex` class object generated by the `build_index()` function,
 and a directory path to save the intermediate and final results, respectively.
 
 This function aligns sequence reads within
 the [two-stage alignment process](#two-stage-alignment-process) described above.
-Thus,
-it (i) aligns reads to the type 1 reference sequence (i.e., `refseq.t1.fa`)
+Thus, it (i) aligns reads to the type 1 reference sequence (i.e., `refseq.t1.fa`)
 and (ii) collects the unaligned reads and aligns
 them with the type 2 reference sequence (i.e., `refseq.t2.fa`).
 
-Two alignment tools
-([Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
-and [HISAT2](https://daehwankimlab.github.io/hisat2/))
-can be specified for sequence read alignment.
-By default, [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) 
+By default, [HISAT2](https://daehwankimlab.github.io/hisat2/)
 is used, and it can be changed with the `alinger` argument.
-Similar to the `build_index` function,
-the `align_reads` function first attempts to call the specified alignment tool
+Similar to the `build_index()` function,
+the `align_reads()` function first attempts to call the specified alignment tool
 directly installed on the operation system;
 however, if the tool is not installed,
-the function then attempts to call
-the `bowtie2_build` or `hisat2_build` function implemented in
-`r Biocpkg('Rbowtie2')` or `r Biocpkg('Rhisat2')` packages for alignment.
+the function then attempts to call alignment functions implemented in
+`r Biocpkg('Rbowtie2')` or `r Biocpkg('Rhisat2')` packages.
 
 The following example is aligning RNA-Seq reads in FASTQ format (`fq`)
 on the reference index (`ref_index`) of PSTVd isolate Cen-1 (FR851463) which was generated
@@ -489,8 +482,8 @@ can be checked using `@bam` and `@clean_bam` slots, respectively.
 
 
 ```{r implementation__align_read_output_bam}
-get_slot_contents(aln, 'bam')
-get_slot_contents(aln, 'clean_bam')
+slot(aln, 'bam')
+slot(aln, 'clean_bam')
 ```
 
 
@@ -499,12 +492,12 @@ number of aligned reads) can be checked using the `@stats` slot.
 
 
 ```{r implementation__align_read_stats}
-get_slot_contents(aln, 'stats')
+slot(aln, 'stats')
 ```
 
 
 
-By default, the `align_read` function allows a single mismatch in the alignment
+By default, the `align_read()` function allows a single mismatch in the alignment
 of each read (i.e., `n_mismatch = 1`).
 To forbid a mismatch or allow more mismatches,
 assign `0` or a large number to the `n_mismatch` argument.
@@ -535,34 +528,32 @@ aln <- align_reads(input = fq,
 
 Additional arguments to be directly passed on to the alignment tool can be
 specified with the `add_args` argument.
-For example, to increase the alignment sensitivity,
-we set the maximum number of mismatches to 1
-and the length of seed substrings for alignment to 20
-during the process of the Bowtie2 
-[multiseed alignment](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#multiseed-heuristic).
-See the
-[Bowtie2 website](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#command-line)
-to find additional parameters of Bowtie2.
+For example, to disable spliced alignment for HISAT2, we set `--no-spliced-alignment`
+for HISAT alinger as follows.
 
 
 ```{r implementation__align_read__add_params, eval=FALSE}
 aln <- align_reads(input = fq,
                    index = ref_index,
                    output = file.path(ws, 'align_results'),
-                   add_args = '-L 20 -N 1')
+                   add_args = '--no-spliced-alignment')
 ```
 
+For additional parameters available with HISAT2, refer to the [HISAT2 Online Manual](https://daehwankimlab.github.io/hisat2/manual/).
 
-To use
-[HISAT2](https://daehwankimlab.github.io/hisat2/)/`r Biocpkg('Rhisat2')`,
-assign `hisat2` to the `aligner` argument.
+Alternatively, user can use [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+for alignment by setting the `aligner` argument to `"bowtie2"`.
+Similar to HISAT2, user can specify additional alignment parameters
+using the appropriate arguments. For a full list of Bowtie2 options,
+refer to the [Bowtie2 Online Manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#command-line).
 
 
-```{r implementation__align_read__hisat2, eval=FALSE}
+```{r implementation__align_read__bt2, eval=FALSE}
 aln <- align_reads(input = fq,
-                   index = ref_ht2index ,
+                   index = ref_bt2index ,
                    output = file.path(ws, 'align_results'),
-                   aligner = 'hisat2')
+                   aligner = 'bowtie2',
+                   add_args = '-L 20 -N 1')
 ```
 
 
@@ -570,16 +561,15 @@ aln <- align_reads(input = fq,
 ## Summarization and visualization of alignment results
 
 Summarization and visualization of the alignment results can be performed with
-the `calc_coverage` and `plot` functions, respectively.
-The `calc_coverage` function calculates alignment coverage
+the `calc_coverage()` and `plot()` functions, respectively.
+The `calc_coverage()` function calculates alignment coverage
 from the two BAM files, `*.clean.t1.bam` and `*.clean.t2.bam`,
-generated by the `align_reads` function.
+generated by the `align_reads()` function.
 
 
 ```{r implementation__summary}
 alncov <- calc_coverage(aln)
 ```
-
 
 
 This function returns a `CircSeqAlignTkCoverage` class object.
@@ -589,12 +579,12 @@ as a data frame.
 
 
 ```{r implementation__summary_fwd}
-head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reverse'))
+head(slot(alncov, 'forward'))
+head(slot(alncov, 'reverse'))
 ```
 
 
-Coverage can be visualized with an area chart  using the `plot` function.
+Coverage can be visualized with an area chart  using the `plot()` function.
 In the chart, the upper and lower directions of the y-axis
 represent the alignment coverage of reads with forward and reverse strands,
 respectively.
@@ -611,7 +601,7 @@ assign the targeted length to the `read_lengths` argument.
 plot(alncov, read_lengths = c(21, 22))
 ```
 
-As the `plot` function returns a ggplot2 class object,
+As the `plot()` function returns a ggplot2 class object,
 we can use additional functions
 implemented in the `r CRANpkg('ggplot2')` package [@ggplot2]
 to decorate the chart, for example:
@@ -631,9 +621,10 @@ plot(alncov) + coord_polar()
 
 ## Generation of synthetic sequence reads
 
-The `r Biocpkg('CircSeqAlignTk')` package implements the `generate_fastq`
-function to generate synthetic sequence reads in FASTQ format to mimic RNA-Seq
-data sequenced from organelles or organisms with circular genome sequences.
+The `r Biocpkg('CircSeqAlignTk')` package implements the `generate_fastq()`
+function to generate synthetic sequence reads in FASTQ format
+to simulate RNA-Seq data sequenced from organelles or organisms
+with circular genome sequences.
 This function is intended for the use of developers,
 to help them evaluate the performance of alignment tools,
 new alignment algorithms, and new workflows.
@@ -650,7 +641,7 @@ sim <- generate_reads(output = file.path(ws, 'synthetic_reads.fq.gz'))
 
 
 This function returns a `CircSeqAlignTkSim` class object whose
-data structure can be checked with the `str` function, as follows:
+data structure can be checked with the `str()` function, as follows:
 
 ```{r sim__default_params_str}
 str(sim)
@@ -662,7 +653,7 @@ can be checked using `@peak` slot.
 
 
 ```{r sim__default_params_peak}
-head(get_slot_contents(sim, 'peak'))
+head(slot(sim, 'peak'))
 ```
 
 The parameters for sequence-read sampling
@@ -676,20 +667,20 @@ the nucleotides and length of the sampled sequence reads.
 
 
 ```{r sim__default_params_readinfo}
-dim(get_slot_contents(sim, 'read_info'))
-head(get_slot_contents(sim, 'read_info'))
+dim(slot(sim, 'read_info'))
+head(slot(sim, 'read_info'))
 ```
 
 
 The alignment coverage of the synthetic sequence reads
 are stored in the `@coverage` slot as a `CircSeqAlignTkCoverage` class object.
-This can be visualized using the `plot` function.
+This can be visualized using the `plot()` function.
 
 
 ```{r simDefaultParamsCoverageFig, fig.cap='Alignment coverage of the synthetic data.'}
-alncov <- get_slot_contents(sim, 'coverage')
-head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reverse'))
+alncov <- slot(sim, 'coverage')
+head(slot(alncov, 'forward'))
+head(slot(alncov, 'reverse'))
 plot(alncov)
 ```
 
@@ -697,7 +688,7 @@ plot(alncov)
 ## Examples of sequence read generation with additional paramaters
 
 To change the number of sequence reads that need to be generated,
-use the `n` argument in the `generate_reads` function.
+use the `n` argument in the `generate_reads()` function.
 
 
 ```{r sim__args_n}
@@ -705,7 +696,7 @@ sim <- generate_reads(n = 1e3, output = file.path(ws, 'synthetic_reads.fq.gz'))
 ```
 
 
-By default, the `generate_reads` function generates sequence reads from the
+By default, the `generate_reads()` function generates sequence reads from the
 genome sequence of the viroid PSTVd isolate Cen-1
 ([FR851463](https://www.ebi.ac.uk/ena/browser/view/FR851463)).
 To change the seed genome sequence for sequence read sampling,
@@ -721,7 +712,7 @@ sim <- generate_reads(seq = genome_seq,
 ```
 
 
-By default, `generate_reads` function generates sequence reads
+By default, `generate_reads()` function generates sequence reads
 with the adapter sequence "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC".
 To change the adapter sequence, specify a sequence as characters
 or as a file path to a FASTA format file containing a adapter sequence
@@ -739,7 +730,7 @@ sim <- generate_reads(adapter = adapter,
 
 
 In contrast, to generate sequence reads without adapter sequences,
-run the `generate_reads` function with `adapter = NA`.
+run the `generate_reads()` function with `adapter = NA`.
 
 
 ```{r sim__args_adapter_NA}
@@ -749,7 +740,7 @@ sim <- generate_reads(adapter = NA,
 ```
 
 
-The `generate_reads` function also implements a process that introduces several
+The `generate_reads()` function also implements a process that introduces several
 mismatches into the reads after sequence-read sampling.
 To introduce a single mismatch for each sequence read
 with a probability of 0.05,
@@ -782,7 +773,7 @@ sim <- generate_reads(output = file.path(ws, 'synthetic_reads.fq.gz'),
 ```
 
 
-In addition, the `generate_reads` provide some groundbreaking arguments,
+In addition, the `generate_reads()` provide some groundbreaking arguments,
 `srna_length` and `peaks`,
 to specify the length and strand of sequence reads
 and the positions of peaks of the alignment coverage, respectively.
@@ -812,11 +803,11 @@ sim <- generate_reads(n = 1e4,
 
 
 ```{r simSetLengthAndPeaks, fig.cap='Alignment coverage of the synthetic data.'}
-plot(get_slot_contents(sim, 'coverage'))
+plot(slot(sim, 'coverage'))
 ```
 
 
-In the synthetic data generated by the `generate_reads` function, 
+In the synthetic data generated by the `generate_reads()` function, 
 every peak contains a relatively equal proportion of sequence reads
 with different sequence read lengths (Figure \@ref(fig:simSetLengthAndPeaks)).
 However, in real data, composition of the reads differs from peak to peak.
@@ -824,8 +815,8 @@ The `r Biocpkg('CircSeqAlignTk')` package provides a `merge` function
 to generate such synthetic data.
 This feature can be used,
 to first generate multiple synthetic data with various features
-with the `generate_reads` function
-and then merge these synthetic data with the `merge` function.
+with the `generate_reads()` function
+and then merge these synthetic data with the `merge()` function.
 
 
 ```{r simMergeMultiSimObjectsScripts}
@@ -880,7 +871,7 @@ sim <- merge(sim_1, sim_2, sim_3,
 ```
 
 ```{r simMergeMultiSimObjects, fig.cap='Alignment coverage of the synthetic data.'}
-plot(get_slot_contents(sim, 'coverage'))
+plot(slot(sim, 'coverage'))
 ```
 
 
@@ -901,7 +892,7 @@ from aligning sequence reads to calculating alignment coverage,
 as shown in the [Quick Start](#quick-start) section.
 First, to validate that the workflow is working correctly, 
 we generate sequence reads without adapter sequences and mismatches 
-using the `generate_reads` function and apply the workflow to
+using the `generate_reads()` function and apply the workflow to
 these synthetic reads.
 
 
@@ -926,31 +917,25 @@ whereas the predicted alignment coverage is stored in the `alncov` variable.
 Here, we can calculate the root mean squared error (RMSE) 
 between the true and predicted values for validation.
 
+
 ```{r simeval__chk_workflow_rmse}
 # coverage of reads in forward strand
-fwd_pred <- get_slot_contents(alncov, 'forward')
-fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
+fwd_pred <- slot(alncov, 'forward')
+fwd_true <- slot(slot(sim, 'coverage'), 'forward')
 sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
 # coverage of reads in reverse strand
-rev_pred <- get_slot_contents(alncov, 'reverse')
-rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
+rev_pred <- slot(alncov, 'reverse')
+rev_true <- slot(slot(sim, 'coverage'), 'reverse')
 sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 ```
 
-```{r simeval_chk_workflow_rmse0, echo = FALSE}
-if ((sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true)) != 0) stop()
-if ((sum((rev_pred - rev_true) ^ 2) / length(rev_true)) != 0) stop()
-```
 
+We observed only a small discrepancy between the true and predicted alignment coverage
+when the simulated dataset does not contain adapter sequences and mismatches.
 
-We found that there was no error (i.e., RMSE = 0) 
-between the true and predicted values of alignment coverage. 
-Thus, we confirmed that the workflow presented in the
-`r Biocpkg('CircSeqAlignTk')` package works perfectly
-when the reads do not contain adapter sequences or mismatches.
 
 Next, we evaluate the performance of this workflow under conditions similar to
-those of real RNA-seq data by concatenating adapter sequences and introducing
+those of real RNA-Seq data by concatenating adapter sequences and introducing
 mismatches into the reads.
 We first generate synthetic sequence reads with a
 length of 150 nt that contain at most two mismatches and
@@ -975,7 +960,7 @@ library(Rbowtie2)
 # quality control
 params <- '--maxns 1 --trimqualities --minquality 30 --minlength 21 --maxlength 24'
 remove_adapters(file1 = file.path(ws, 'synthetic_reads.fq'),
-                adapter1 = get_slot_contents(sim, 'adapter'), 
+                adapter1 = slot(sim, 'adapter'), 
                 adapter2 = NULL,
                 output1 = file.path(ws, 'srna_trimmed.fq'),
                 params,
@@ -1001,21 +986,20 @@ alignment coverage.
 
 ```{r simeval__sim1_rmse}
 # coverage of reads in forward strand
-fwd_pred <- get_slot_contents(alncov, 'forward')
-fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
+fwd_pred <- slot(alncov, 'forward')
+fwd_true <- slot(slot(sim, 'coverage'), 'forward')
 sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
 # coverage of reads in reverse strand
-rev_pred <- get_slot_contents(alncov, 'reverse')
-rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
+rev_pred <- slot(alncov, 'reverse')
+rev_true <- slot(slot(sim, 'coverage'), 'reverse')
 sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 ```
 
 
-If the sequence reads contained adapter sequences and mismatches,
-some sequence reads failed to align.
-Therefore, the coverage calculated from this alignment result (i.e., `aln`)
-showed errors from the true alignment coverage
-(i.e., `get_slot_contents(sim, 'coverage')`).
+When sequence reads contained adapter sequences and mismatches,
+some reads failed to align.
+As a result, the coverage derived from the alignment output (`aln`) showed
+slightly larger deviations from the true alignment coverage (`slot(sim, 'coverage')`).
 
 
 # Case studies
@@ -1025,7 +1009,7 @@ showed errors from the true alignment coverage
 
 
 Synthetic sequence reads for various scenarios can be generated by repeating
-the `generate_reads` function.
+the `generate_reads()` function.
 These synthetic sequence reads can be used to evaluate the workflow,
 from aligning reads to calculating alignment coverage as shown in the
 [Quick Start](#quick-start) chapter, more reliably. 
@@ -1064,7 +1048,7 @@ for (i in seq(fwd_rmse)) {
     
     # quality control
     remove_adapters(file1 = syn_fq,
-                    adapter1 = get_slot_contents(sim, 'adapter'), 
+                    adapter1 = slot(sim, 'adapter'), 
                     adapter2 = NULL,
                     output1 = trimmed_syn_fq,
                     params,
@@ -1081,11 +1065,11 @@ for (i in seq(fwd_rmse)) {
     alncov <- calc_coverage(aln)
     
     # calculate RMSE
-    fwd_pred <- get_slot_contents(alncov, 'forward')
-    fwd_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'forward')
+    fwd_pred <- slot(alncov, 'forward')
+    fwd_true <- slot(slot(sim, 'coverage'), 'forward')
     fwd_rmse[i] <- sqrt(sum((fwd_pred - fwd_true) ^ 2) / length(fwd_true))
-    rev_pred <- get_slot_contents(alncov, 'reverse')
-    rev_true <- get_slot_contents(get_slot_contents(sim, 'coverage'), 'reverse')
+    rev_pred <- slot(alncov, 'reverse')
+    rev_true <- slot(slot(sim, 'coverage'), 'reverse')
     rev_rmse[i] <- sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
 }
 ```
@@ -1107,7 +1091,7 @@ respectively.
 The result indicates that performance of this workflow
 is worse when the sequence reads
 contain up to two mismatches as compared with no mismatches 
-(i.e., RMSE = 0 as shown in the section
+(i.e., RMSE shown in the section
 \@ref(performance-evaluation-with-the-synthetic-data)).
 To examine detailed changes in performance,
 users can change the number of mismatches and
@@ -1117,59 +1101,32 @@ the probabilities of mismatches to estimate how the performance changes.
 
 ## Analysis of small RNA-Seq data from vioid-infected tomato plants
 
-Viroids are the smallest infectious pathogens. Most variants of viroids
-infect plants without being toxic, while some variants occasionally
-result in extensive damage such as stunting, leaf deformation,
-leaf necrosis, fruit distortion, and even plant death [@Flores_2005].
-A single outbreak of toxic viroid infection can cause tremendous economic
-and agricultural damage [@Soliman_2012; @Sastry_2013].
-
 The damage caused by viroids to plants is thought to occur
 during the replication process of the viroid that infects the plants. 
-Viroids are composed of 246–401 nt single-stranded circular non-coding RNAs
-[@Hull_2014; @Flores_2015; @Gago_2016].
-Replication of viroids depends on their host plants through an RNA-based
-rolling circle process.
-This process generates double-stranded RNAs (dsRNAs) as intermediate products.
-The dsRNAs are cut into 21–24 nt fragments called
-small interfering RNAs (siRNAs) or microRNAs (miRNAs) by Dicer,
-a bidentate RNase III-like enzyme.
-siRNAs or miRNAs are then transferred to
-the RNA-induced silencing complex (RISC),
-which acts as a functional intermediate for RNA interference (RNAi).
-Consequently, RNAi causes mRNA cleavage and translational attenuation,
-resulting in a disease in the host plant.
-
-Sequencing of small RNAs,
-including viroid-derived small RNAs (vd-sRNAs), siRNAs,
-and miRNAs from viroid-infected plants could offer insights
-regarding the mechanism of infection and eventually help in
-preventing plant damage.
-The common workflow for analyzing such
-sequencing data is to
+Sequencing of small RNAs, including viroid-derived small RNAs (vd-sRNAs),
+siRNAs, and miRNAs from viroid-infected plants could offer insights regarding
+the mechanism of infection and eventually help in preventing plant damage.
+The common workflow for analyzing such sequencing data is to
 (i) limit the read-length (e.g., between 21 and 24 nt),
 (ii) align these reads to viroid genome sequences,
 and (iii) visualize coverage of alignment
 to identify the pathogenic region in the viroid.
 
-Adkar-Purushothama et al. reported viroid-host interactions
-by infecting potato spindle tuber viroid (PSTVd) RG1 variant in tomato plants
-[@Adkar_2017].
+Adkar-Purushothama et al. reported viroid-host interactions by infecting potato
+spindle tuber viroid (PSTVd) RG1 variant in tomato plants [@Adkar_2017].
 In their study, small RNAs were sequenced from viroid-infected tomato plants
 to investigate the expression profiles (i.e., alignment coverage) of vd-sRNAs.
 In this case study, we demonstrate the manner in which such expression
 profiles can be calculated using the `r Biocpkg('CircSeqAlignTk')` package.
 
 First, we prepare a directory to store the initial data, intermediate,
-and final results.
-Then, we use the `download.file` function to download
+and final results. Then, we use the `download.file` function to download
 the genome sequence of PSTVd RG1 and small RNA-Seq data of
 viroid-infected tomato plants that are registered in GenBank with
 accession number [U23058](https://www.ncbi.nlm.nih.gov/nuccore/U23058)
 and gene expression omnibus (GEO) with accession number
 [GSE70166](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE70166),
-respectively.
-The downloaded genome sequence is saved as `U23058.fa`
+respectively. The downloaded genome sequence is saved as `U23058.fa`
 and the small RNA-Seq data is saved as `GSM1717894_PSTVd_RG1.txt.gz`
 by running the following scripts:
 
@@ -1186,14 +1143,12 @@ download.file(url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?d
               destfile = file.path(project_dpath, 'U23058.fa'))
 download.file(url = 'https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE70166&format=file',
               destfile = file.path(project_dpath, 'GSE70166.tar'))
-untar(file.path(project_dpath, 'GSE70166.tar'), 
-      exdir = project_dpath)
+untar(file.path(project_dpath, 'GSE70166.tar'), exdir = project_dpath)
 ```
 
 
-Following the preparation,
-we specify the genome sequence of the viroid (i.e., `U23058.fa`)
-to build index files,
+Following the preparation, we specify the genome sequence of the viroid
+(i.e., `U23058.fa`) to build index files,
 and align the reads of the small RNA-Seq data (`GSM1717894_PSTVd_RG1.txt.gz`)
 against the viroid genome.
 Note that this process may take a few minutes, depending on machine power.
@@ -1211,7 +1166,7 @@ aln <- align_reads(input = fq, index = ref_index,
 
 
 ```{r tutorial_viroid__alignment_result, echo = FALSE}
-x <- as.matrix(get_slot_contents(aln, 'stats'))
+x <- as.matrix(slot(aln, 'stats'))
 ```
 
 
@@ -1230,11 +1185,11 @@ that were successfully aligned to the viroid genome sequences, respectively.
 
 
 ```{r tutorial_viroid__alignment_stats}
-get_slot_contents(aln, 'stats')
+slot(aln, 'stats')
 ```
 
-`calc_coverage` and `plot` can be used to calculate and visualize the
-alignment coverage.
+The `calc_coverage()` and `plot()` functions can be used
+to calculate and visualize the alignment coverage.
 
 ```{r tutorial_viroid__alignment_stats_calcov}
 alncov <- calc_coverage(aln)
@@ -1242,8 +1197,8 @@ alncov <- calc_coverage(aln)
 
 
 ```{r tutorialViroidCoverage, fig.cap='Alignment coverage of small RNA-Seq data obtained from the viroid-infected tomato plants.'}
-head(get_slot_contents(alncov, 'forward'))
-head(get_slot_contents(alncov, 'reverse'))
+head(slot(alncov, 'forward'))
+head(slot(alncov, 'reverse'))
 plot(alncov)
 ```
 

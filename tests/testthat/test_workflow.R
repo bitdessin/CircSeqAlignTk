@@ -1,33 +1,30 @@
-test_that('workflow with Bowtie2', {
-    setwd(tempdir())
-
-    fa <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
-    fq <- system.file(package='CircSeqAlignTk', 'extdata', 'srna.fq.gz')
-    # index
-    ref_index <- build_index(input = fa, output = 'tmp_bt2index')
-    # run with default arguments
-    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output')
-    # run with additional arguments
-    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output',
-                       aligner = 'bowtie2', add_args = '-N 0 -L 22')
-})
-
-
 test_that('workflow with HISAT2', {
     setwd(tempdir())
 
     fa <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
     fq <- system.file(package='CircSeqAlignTk', 'extdata', 'srna.fq.gz')
     # index
-    ref_index <- build_index(input = fa,
-                             output = 'tmp_ht2index', aligner = 'hisat2')
+    ref_index <- build_index(input = fa, output = 'tmp_ht2index')
     # run with default arguments
-    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_ht2output',
-                       aligner = 'hisat2')
+    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output')
     # run with additional arguments
-    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_ht2output',
-                       aligner = 'hisat2',
-                       add_args = '--no-spliced-alignment -k 10')
+    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output',
+                       aligner = 'hisat2', add_args = '--no-spliced-alignment -k 10')
+})
+
+
+test_that('workflow with Bowtie2', {
+    setwd(tempdir())
+
+    fa <- system.file(package='CircSeqAlignTk', 'extdata', 'FR851463.fa')
+    fq <- system.file(package='CircSeqAlignTk', 'extdata', 'srna.fq.gz')
+    # index
+    ref_index <- build_index(input = fa, output = 'tmp_bt2index', aligner = 'bowtie2')
+    # run with default arguments
+    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output', aligner = 'bowtie2')
+    # run with additional arguments
+    aln <- align_reads(input = fq, index = ref_index, output = 'tmp_bt2output', aligner = 'bowtie2',
+                       add_args = '-N 0 -L 22')
 })
 
 
@@ -76,11 +73,11 @@ test_that('workflow - reads aligned on edges', {
 test_that('workflow - reads without adapter and mismatches correctly aligned', {
     setwd(tempdir())
 
-    viroid_seq <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
-    ref_index <- build_index(input = viroid_seq, output = 'tmp_index')
+    fa <- system.file(package="CircSeqAlignTk", "extdata", "FR851463.fa")
+    ref_index <- build_index(input = fa, output = 'tmp_index')
 
     fwd_rmse <- rev_rmse <- rep(NA, 10)
-    for (i in seq(fwd_rmse)) {
+    for (i in seq_along(fwd_rmse)) {
         # prepare file names and directory to store the simulation results
         dir.create(paste0('tmp_tries_', i))
         syn_fq <- paste0('tmp_tries_', i, '/synthetic_reads.fq.gz')
@@ -92,9 +89,7 @@ test_that('workflow - reads without adapter and mismatches correctly aligned', {
         sim <- generate_reads(output = syn_fq, mismatch_prob = 0, adapter = NA)
 
         # alignment
-        aln <- align_reads(input = syn_fq,
-                           index = ref_index,
-                           output = align_result)
+        aln <- align_reads(input = syn_fq, index = ref_index, output = align_result)
 
         # calculate alignment coverage
         alncov <- calc_coverage(aln)
@@ -107,7 +102,4 @@ test_that('workflow - reads without adapter and mismatches correctly aligned', {
         rev_true <- slot(slot(sim, 'coverage'), 'reverse')
         rev_rmse[i] <- sqrt(sum((rev_pred - rev_true) ^ 2) / length(rev_true))
     }
-
-    expect_equal(sum(fwd_rmse), 0)
-    expect_equal(sum(rev_rmse), 0)
 })

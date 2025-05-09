@@ -9,7 +9,7 @@ build_index(
   output = NULL,
   n_threads = 1,
   overwrite = TRUE,
-  aligner = c("bowtie2", "hisat2"),
+  aligner = c("hisat2", "bowtie2"),
   add_args = NULL
 )
 }
